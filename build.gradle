@@ -17,7 +17,7 @@ java{
 
 ext{
     //the build number that this mod is made for
-    mindustryVersion = 'v145'
+    mindustryVersion = 'v146'
     jabelVersion = "93fde537c7"
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 }
@@ -80,13 +80,23 @@ jar{
     }
 }
 
+task copyJar(type: Copy) {
+    dependsOn jar
+    from("$buildDir/libs/${project.archivesBaseName}Desktop.jar")
+    into("/Users/skeledragon/Library/Application Support/Mindustry/mods")
+}
+
+task deployNew(type: Jar){
+    dependsOn jar
+    dependsOn copyJar
+}
+
 task deploy(type: Jar){
     dependsOn jarAndroid
     dependsOn jar
     archiveFileName = "${base.archivesBaseName}.jar"
 
     from{ [zipTree("$buildDir/libs/${project.archivesBaseName}Desktop.jar"), zipTree("$buildDir/libs/${project.archivesBaseName}Android.jar")] }
-
     doLast{
         delete{
             delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"

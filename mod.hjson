@@ -1,17 +1,17 @@
 #the mod name as displayed in-game
-displayName: "Java Mod Template"
+displayName: "Project Igom"
 
 #the internal name of your mod
-name: "example-java-mod"
+name: "project-igom"
 
 #your name
-author: "You"
+author: "Skeledragon"
 
 #the fully qualified main class of the mod
-main: "example.ExampleJavaMod"
+main: "Igom.ProjectIgom"
 
 #the mod description as seen in the mod dialog
-description: "A Mindustry Java mod template."
+description: "Adds a new planet named Igom. \nCredit to Saigononozomi for the AttributeCollector class."
 
 #the mod version
 version: 1.0
