@@ -49,7 +49,7 @@ public class IgomDefenseBlocks {
         //no reference is needed here since they can be looked up by name later
         nickelWallSmall = new Wall("nickel-wall-small") {{
             localizedName = "Mini Nickel Wall";
-            // drawTeamOverlay = false; TODO: Add team decal for walls
+            drawTeamOverlay = false;
             buildCostMultiplier = 5f;
             squareSprite = false;
             requirements(Category.defense, with(IgomItems.nickel, 10));
@@ -59,7 +59,7 @@ public class IgomDefenseBlocks {
         }};
         nickelWall = new Wall("nickel-wall") {{
             localizedName = "Nickel Wall";
-            // drawTeamOverlay = false; TODO: Add team decal for walls
+            drawTeamOverlay = false;
             buildCostMultiplier = 5f;
             squareSprite = false;
             requirements(Category.defense, with(IgomItems.nickel, 30));

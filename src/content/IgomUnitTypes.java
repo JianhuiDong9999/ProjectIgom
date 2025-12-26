@@ -13,7 +13,6 @@ import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.ForceFieldAbility;
-import mindustry.entities.abilities.RepairFieldAbility;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
 import mindustry.entities.part.RegionPart;
@@ -37,12 +36,14 @@ public class IgomUnitTypes {
         }
     }*/
     public static UnitType
-            // Core units
+            // Core Units
             detect, survey, advent,
+            // Ground Armored Units
+            pike, halberd, bulwark, pavise, aegis,
             // Fighters
-            neutrino, photon, hadron, nymph, shrike, condor, phoenix,
-            // Frigates
-            vector, azimuth, penumbra,
+            neutrino, photon, gluon, hadron, nymph, shrike, condor, phoenix,
+            // Air Frigates
+            vector, azimuth, hyperplane, penumbra, umbra,
             // Air Cruisers
                 // Reaver Cruisers
                     twilight, oblivion, nihility,
@@ -50,20 +51,88 @@ public class IgomUnitTypes {
                     nimbostratus, cumulonimbus, tempest,
             // Naval Cruisers
                 // Battlecruisers
-                    garfish, barracuda, dunkleosteus;
+                    garfish, barracuda, cretoxyrhina;
 
     public static void load() {
+        EntityMapping.nameMap.put("project-igom-pike", MechUnit::create);
+        pike = new UnitType("pike") {{
+            localizedName = "Pike";
+            outlineColor = Color.valueOf("3a4752");
+
+            speed = 0.6f;
+            hitSize = 12f;
+            rotateSpeed = 3f;
+            health = 840;
+            armor = 5f;
+            weapons.add(new Weapon("project-igom-pike-cannon"){{
+                top = false;
+                reload = 36f;
+                alternate = true;
+                x = 6f;
+                y = 0f;
+                recoil = 1.5f;
+                recoilPow = 1f;
+                shootY = 6f;
+                shoot.shots = 2;
+                shoot.shotDelay = 5f;
+                shootSound = Sounds.shoot;
+                ejectEffect = Fx.casing1;
+                bullet = new BasicBulletType(5f, 42){{
+                    frontColor = Color.valueOf("ffffff");
+                    backColor = Color.valueOf("657de2");
+                    width = 12f;
+                    height = 16f;
+                    lifetime = 40f;
+                    hitEffect = Fx.hitBulletBig;
+                    knockback = 1.5f;
+                }};
+            }});
+        }};
+        EntityMapping.nameMap.put("project-igom-halberd", MechUnit::create);
+        halberd = new UnitType("halberd") {{
+            localizedName = "Halberd";
+            outlineColor = Color.valueOf("3a4752");
+
+            speed = 0.5f;
+            hitSize = 18f;
+            rotateSpeed = 2.5f;
+            health = 3250;
+            armor = 24f;
+            weapons.add(new Weapon("project-igom-halberd-cannon"){{
+                top = false;
+                reload = 72f;
+                shoot = new ShootSpread(5, 2f);
+                recoil = 3f;
+                recoilPow = 2f;
+                inaccuracy = 2f;
+                x = 8f;
+                ejectEffect = Fx.casing2;
+                shootSound = Sounds.shootDiffuse;
+                bullet = new BasicBulletType(8f, 36){{
+                    frontColor = Color.valueOf("ffffff");
+                    backColor = Color.valueOf("657de2");
+                    width = 20f;
+                    height = 16f;
+                    lifetime = 32f;
+                    knockback = 1.2f;
+                    hitEffect = Fx.hitBulletBig;
+                    trailColor = Color.valueOf("657de2");
+                    trailLength = 2;
+                    trailWidth = 3f;
+                }};
+            }});
+        }};
+        EntityMapping.nameMap.put("project-igom-detect", PayloadUnit::create);
         detect = new UnitType("detect") {{
             outlineColor = Color.valueOf("3a4752");
-            constructor = PayloadUnit::create;
             localizedName = "Detect";
             coreUnitDock = true;
             isEnemy = false;
 
             lowAltitude = false;
             flying = true;
-            mineSpeed = 2.25f;
-            mineTier = 3;
+            mineSpeed = 4f;
+            mineTier = 2;
             buildSpeed = 1f;
             payloadCapacity = 2f * 2f * tilesize * tilesize;
             drag = 0.017f;
@@ -106,7 +175,7 @@ public class IgomUnitTypes {
                         targetSwitchInterval = 4f;
                         bullet = new BulletType(){{
                             layerOffset = -1f;
-                            shootSound = Sounds.lasershoot;
+                            shootSound = Sounds.shootSegment;
                             shootEffect = Fx.sparkShoot;
                             hitEffect = Fx.pointHit;
                             maxRange = 80f;
@@ -124,7 +193,7 @@ public class IgomUnitTypes {
                         ejectEffect = Fx.none;
                         inaccuracy = 7.5f;
                         ignoreRotation = true;
-                        shootSound = Sounds.mineDeploy;
+                        shootSound = Sounds.shootRetusa;
                         bullet = new BombBulletType(35f, 12f * 8f){{
                             sprite = "project-igom-small-bomb";
                             backColor = Color.valueOf("99e2ff");
@@ -143,20 +212,20 @@ public class IgomUnitTypes {
                             healColor = Color.valueOf("99e2ff");
                             hitEffect = despawnEffect = new WrapEffect(Fx.dynamicSpikes, Color.valueOf("99e2ff"), 32f);
                             hitShake = 2f;
-                            hitSound = Sounds.plasmaboom;
+                            hitSound = Sounds.explosionPlasmaSmall;
                             shootEffect = Fx.none;
                             smokeEffect = Fx.none;
                         }};
                     }}
             });
         }};
+        EntityMapping.nameMap.put("project-igom-cumulonimbus", UnitEntity::create);
         cumulonimbus = new UnitType("cumulonimbus") {{
-            description = "Fires heavy shock cannon bursts which pierce and explode on impact. " +
-                    "Automatically launches missiles at surrounding targets. " +
-                    "Creates shockwaves to destroy nearby enemy projectiles. " +
-                    "Low in agility. Immune to electricity-related debuffs.";
+            description = "Fires heavy bursts of charged energy bullets which pierce and explode on impact. " +
+                    "Launches shock missiles at surrounding targets. " +
+                    "Generates shockwaves that destroy nearby enemy projectiles. " +
+                    "Low in agility. Immune to electric debuffs.";
             outlineColor = Color.valueOf("3a4752");
-            constructor = UnitEntity::create;
             localizedName = "Cumulonimbus";
             isEnemy = true;
 
@@ -171,6 +240,7 @@ public class IgomUnitTypes {
             itemCapacity = 40;
             health = 15250f;
             armor = 18f;
+            allowedInPayloads = false;
             immunities.addAll(StatusEffects.shocked, StatusEffects.electrified);
             engines.set(new UnitEngine[]{new UnitEngine(0f,-24f,8f,270f),
                     new UnitEngine(-24f,-8f,6f,225f),
@@ -187,8 +257,7 @@ public class IgomUnitTypes {
             abilities.add(new ShockwaveAbility(175, 60, 120) {{
                 shockwaveColor = Color.valueOf("b3ecff");
                 shockwaveStroke = 3f;
-                shockSound = Sounds.titanExplosion;
-                shockSoundVolume = 0.1f;
+                shockSound = Sounds.shockwaveTower;
                 shapeRadius = 4.2f;
                 shapeColor = Color.valueOf("ffffff");
                 //y = 12f;
@@ -223,7 +292,7 @@ public class IgomUnitTypes {
             weapons.add(
                 new Weapon[]{
                     new Weapon("project-igom-cumulonimbus-cannon") {{
-                        shootSound = Sounds.malignShoot;
+                        shootSound = Sounds.shootMalign;
                         x = 12;
                         y = 2;
                         rotate = true;
@@ -252,7 +321,7 @@ public class IgomUnitTypes {
                                 shootWarmupSpeed = 0.05f;
                             }}
                         );
-                        bullet = new BasicBulletType(){{
+                        bullet = new BasicBulletType(15f, 165f){{
                             shootEffect = new MultiEffect(Fx.shootTitan, new WaveEffect(){{
                                 colorTo = Color.valueOf("80dfff");
                                 sizeTo = 26f;
@@ -260,8 +329,8 @@ public class IgomUnitTypes {
                                 strokeFrom = 4f;
                             }});
                             smokeEffect = Fx.shootSmokeTitan;
-                            hitSound = Sounds.spark;
-                            despawnSound = Sounds.titanExplosion;
+                            hitSound = Sounds.shootArc;
+                            despawnSound = Sounds.explosionTitan;
                             hitSoundVolume = 1.25f;
                             hitColor = Color.valueOf("b3ecff");
                             hitShake = 7f;
@@ -274,7 +343,7 @@ public class IgomUnitTypes {
                                             rand.setSeed(b.id * 2L);
                                             float lenScl = rand.random(0.5f, 1f);
                                             b.scaled(b.lifetime * lenScl, e -> {
-                                                randLenVectors(e.id - 1, e.fin(Interp.pow10Out), (int)(2.9f * intensity), 22f * intensity, (x, y, in, out) -> {
+                                                randLenVectors(e.id - 1, e.fin(Interp.pow10Out), (int)(1.2f * intensity), 22f * intensity, (x, y, in, out) -> {
                                                     float fout = e.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
                                                     float rad = fout * ((2f + intensity) * 2.35f);
 
@@ -298,14 +367,13 @@ public class IgomUnitTypes {
                             trailEffect = Fx.missileTrailShort;
                             trailInterval = 0.25f;
                             trailParam = 4f;
-                            speed = 15f;
-                            recoil = 0.15f;
-                            damage = 165f;
+                            // recoil = 0.15f;
                             pierceBuilding = true;
                             pierceCap = 2;
                             splashDamage = 75;
                             splashDamagePierce = true;
                             splashDamageRadius = 64;
+                            collidesAir = false;
                             status = StatusEffects.blasted;
                             lifetime = 18f;
                             width = 18f;
@@ -314,7 +382,7 @@ public class IgomUnitTypes {
                             frontColor = Color.valueOf("b3ecff");
                             shrinkX = shrinkY = 0f;
                             trailColor = Color.valueOf("80dfff");
-                            trailLength = 4;
+                            trailLength = 3;
                             trailWidth = 8f;
 
                             intervalBullet = new LightningBulletType(){{
@@ -329,6 +397,7 @@ public class IgomUnitTypes {
                                 buildingDamageMultiplier = 0.25f;
 
                                 lightningType = new BulletType(0.0001f, 0f){{
+                                    collidesAir = false;
                                     lifetime = Fx.lightning.lifetime;
                                     drawSize = 12f;
                                     hitEffect = Fx.hitLancer;
@@ -362,6 +431,7 @@ public class IgomUnitTypes {
                                 damage = 55f;
                                 splashDamage = 25f;
                                 splashDamageRadius = 12f;
+                                collidesAir = false;
                                 shootEffect = Fx.shootSmokeSquareBig;
                                 hitEffect = new MultiEffect(Fx.hitSquaresColor,
                                         new ExplosionEffect(){{
@@ -384,19 +454,21 @@ public class IgomUnitTypes {
                         }};
                     }},
                         new Weapon("project-igom-cumulonimbus-missile-pod") {{
-                            shootSound = Sounds.missile;
-                            controllable = false;
-                            autoTarget = true;
+                            shootSound = Sounds.shootMissile;
+                            //controllable = false;
+                            //autoTarget = true;
                             x = 12;
                             y = -8;
-                            baseRotation = -45f;
+                            minWarmup = 1f;
+                            shootWarmupSpeed = 1f;
+                            //baseRotation = -45f;
                             baseRotateSpeed = 4f;
                             rotate = true;
                             rotateSpeed = 8f;
                             shootCone = 60f;
                             inaccuracy = 45f;
-                            shoot.shots = 3;
-                            shoot.shotDelay = 9f;
+                            //shoot.shots = 3;
+                            //shoot.shotDelay = 9f;
                             shootY = 4f;
                             shake = 1f;
                             recoil = 2f;
@@ -407,17 +479,19 @@ public class IgomUnitTypes {
                             bullet = electricMissile;
                         }},
                         new Weapon("project-igom-cumulonimbus-missile-pod") {{
-                            shootSound = Sounds.missile;
-                            controllable = false;
-                            autoTarget = true;
+                            shootSound = Sounds.shootMissile;
+                            //controllable = false;
+                            //autoTarget = true;
                             x = 9;
                             y = 8;
+                            minWarmup = 0f;
+                            shootWarmupSpeed = 1f;
                             rotate = true;
                             rotateSpeed = 8f;
                             shootCone = 60f;
                             inaccuracy = 45f;
-                            shoot.shots = 3;
-                            shoot.shotDelay = 9f;
+                            //shoot.shots = 3;
+                            //shoot.shotDelay = 9f;
                             shootY = 4f;
                             shake = 1f;
                             recoil = 2f;
@@ -429,13 +503,13 @@ public class IgomUnitTypes {
                         }},
                 });
         }};
+        EntityMapping.nameMap.put("project-igom-oblivion", UnitEntity::create);
         oblivion = new UnitType("oblivion") {{
             outlineColor = Color.valueOf("3a4752");
-            constructor = UnitEntity::create;
             localizedName = "Oblivion";
             isEnemy = true;
 
-            lowAltitude = true;
+            lowAltitude = false;
             flying = true;
             drag = 0.017f;
             speed = 2f;
@@ -445,6 +519,7 @@ public class IgomUnitTypes {
             itemCapacity = 60;
             health = 17500f;
             armor = 15f;
+            allowedInPayloads = false;
             engines.add(new UnitEngine(0f,-18f,8f,270f),
                     new UnitEngine(-18f,-4f,6f,225f),
                     new UnitEngine(18f, -4f, 6f, 315f));
@@ -453,7 +528,7 @@ public class IgomUnitTypes {
                 riftRadius = 6f;
                 y = 8f;
             }}, new ForceFieldAbility(72.0F, 3F, 7500.0F, 1200.0F){{
-                sides = 6;
+                sides = 24;
                 rotation = 30f;
             }});
 
@@ -461,6 +536,7 @@ public class IgomUnitTypes {
                     new Weapon("project-igom-oblivion-launcher") {{
                         x = 18f;
                         y = 10f;
+                        layerOffset = -0.01f;
                         faceTarget= false;
                         baseRotation = 0f;
                         rotate = true;
@@ -468,7 +544,7 @@ public class IgomUnitTypes {
                         shoot = new ShootSpread(2, 15f);
                         reload = 3.5f;
                         shootCone = 360f;
-                        shootSound = Sounds.blaster;
+                        shootSound = Sounds.shootAvert;
                         bullet = new BasicBulletType(6.25f, 225f) {{
                             splashDamage = 125f;
                             splashDamageRadius = 20f;

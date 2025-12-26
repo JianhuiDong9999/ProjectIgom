@@ -53,7 +53,7 @@ public class IgomCrafterBlocks {
             //no reference is needed here since they can be looked up by name later
             reinforcedArcFurnace = new TeamGenericCrafter("reinforced-arc-furnace") {{
                     localizedName = "Reinforced Arc Furnace";
-                    requirements(Category.crafting, with(Items.graphite, 640, IgomItems.nickel, 420));
+                    requirements(Category.crafting, with(Items.graphite, 480, IgomItems.nickel, 280));
                     squareSprite = false;
                     health = 6540;
                     armor = 4f;
@@ -78,10 +78,10 @@ public class IgomCrafterBlocks {
                             particleLife = 40f;
                     }}, new DrawDefault());
                     fogRadius = 3;
-                    ambientSound = Sounds.smelter;
+                    ambientSound = Sounds.loopSmelter;
                     ambientSoundVolume = 0.2F;
                     consumeItems(ItemStack.with(Items.graphite, 4, Items.sand, 16));
-                    consumePower(18.0F);
+                    consumePower(12.0F);
             }};
     }
 }

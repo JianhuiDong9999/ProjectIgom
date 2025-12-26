@@ -48,7 +48,7 @@ public class ShockwaveAbility extends Ability {
     public float shapeRadius = 6f;
     public float shapeRotateSpeed = 0.5f;
     public float heat = 0f;
-    public Sound shockSound = Sounds.bang;
+    public Sound shockSound = Sounds.none;
     public float shockSoundVolume = 1f;
     protected Interval timer;
 

@@ -5,9 +5,9 @@ import mindustry.content.Items;
 import mindustry.type.Category;
 import mindustry.world.Block;
 import mindustry.world.blocks.liquid.ArmoredConduit;
+import mindustry.world.blocks.liquid.LiquidJunction;
 import mindustry.world.blocks.liquid.LiquidRouter;
-import world.blocks.liquid.FancyLiquidBridge;
-import world.blocks.liquid.JunctionlessArmoredConduit;
+import world.blocks.liquid.ClearLiquidBridge;
 
 import static mindustry.type.ItemStack.with;
 
@@ -20,6 +20,15 @@ public class IgomLiquidBlocks {
     public static void load(){
         //Registers build IgomLiquidBlocks
         //no reference is needed here since they can be looked up by name later
+        insulatedConduitJunction = new LiquidJunction("insulated-conduit-junction") {{
+            localizedName = "Insulated Conduit Junction";
+            requirements(Category.liquid, with(Items.graphite, 18, IgomItems.nickel, 18));
+            buildCostMultiplier = 3f;
+            health = 240;
+            armor = 4f;
+            //liquidCapacity = 10f;
+            //liquidPressure = 1.01f;
+        }};
         insulatedConduitRouter = new LiquidRouter("insulated-conduit-router") {{
             localizedName = "Insulated Conduit Router";
             requirements(Category.liquid, with(Items.graphite, 12, IgomItems.nickel, 12));
@@ -28,11 +37,11 @@ public class IgomLiquidBlocks {
             solid = false;
             health = 240;
             armor = 4f;
-            liquidCapacity = 10f;
-            liquidPressure = 1.01f;
+            liquidCapacity = 32f;
+            liquidPressure = 1f;
             liquidPadding = 0.75f;
         }};
-        insulatedConduitBridge = new FancyLiquidBridge("insulated-conduit-bridge") {{
+        insulatedConduitBridge = new ClearLiquidBridge("insulated-conduit-bridge") {{
             localizedName = "Insulated Conduit Bridge";
             requirements(Category.liquid, with(Items.graphite, 18, IgomItems.nickel, 18));
             buildCostMultiplier = 2f;
@@ -40,20 +49,22 @@ public class IgomLiquidBlocks {
             range = 5;
             health = 420;
             armor = 4f;
-            liquidCapacity = 10f;
-            liquidPressure = 1.01f;
+            liquidCapacity = 32f;
+            liquidPressure = 1f;
+            description = "Transports liquids across obstacles up to 4 tiles wide.";
         }};
-        insulatedConduit = new JunctionlessArmoredConduit("insulated-conduit") {{
+        insulatedConduit = new ArmoredConduit("insulated-conduit") {{
             localizedName = "Insulated Conduit";
-            requirements(Category.liquid, with(Items.graphite, 3, IgomItems.nickel, 3));
+            requirements(Category.liquid, with(Items.graphite, 3, IgomItems.nickel, 2));
             buildCostMultiplier = 3f;
             health = 240;
             armor = 4f;
-            liquidCapacity = 5f;
-            liquidPressure = 1.01f;
+            liquidCapacity = 16f;
+            liquidPressure = 1f;
             leaks = true;
             bridgeReplacement = insulatedConduitBridge;
-            junctionReplacement = null;
+            junctionReplacement = insulatedConduitJunction;
+            description = "Transports liquids. Insulation system maintains pressure and temperature preventing liquids from changing state.";
         }};
     }
 }

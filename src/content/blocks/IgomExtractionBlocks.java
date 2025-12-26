@@ -27,10 +27,7 @@ import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.Fracker;
 import mindustry.world.blocks.storage.CoreBlock;
-import mindustry.world.draw.DrawDefault;
-import mindustry.world.draw.DrawGlowRegion;
-import mindustry.world.draw.DrawLiquidRegion;
-import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
 import type.MethaneFloor;
 import type.MethaneMudFloor;
@@ -43,7 +40,7 @@ import static mindustry.type.ItemStack.with;
 public class IgomExtractionBlocks {
     public static Block
     miniDrill, torqueDrill, iceDrill, thermalCondenser, magneticDrill, hydraulicDrill, methaneCultivator,
-            crystalCollector, methaneExtractor, aluminaExtractor,
+            crystalCollector, methaneExtractor, lithiumExtractor, aluminaExtractor,
             thermalSeparator, precisionDrill, heliumCapturePlant, transporterBay, transporterReceiver;
 
     public static void load(){
@@ -60,11 +57,11 @@ public class IgomExtractionBlocks {
             size = 2;
             health = 350;
             armor = 1;
-            drillTime = 320;
-            tier = 3;
+            drillTime = 480;
+            tier = 2;
             itemCapacity = 10;
-            consumeLiquid(Liquids.water, 2.5f/60f).boost();
-            liquidBoostIntensity = 1.28f;
+            consumeLiquid(Liquids.water, 1.0f/60f).boost();
+            liquidBoostIntensity = 1.24f;
             liquidCapacity = 20f;
 
             description = "Cheap drill that extracts trace resources from the ground. Can be boosted with water.";
@@ -76,18 +73,19 @@ public class IgomExtractionBlocks {
             // drawTeamOverlay = false;
             squareSprite = false;
             rotateSpeed = -0.75f;
-            requirements(Category.production, with(Items.graphite, 120, IgomItems.nickel, 120, Items.silicon, 40));
+            requirements(Category.production, with(Items.graphite, 120, IgomItems.nickel, 80, Items.silicon, 40));
             size = 3;
             health = 750;
             armor = 2;
-            drillTime = 240;
+            drillTime = 282;
             tier = 3;
             itemCapacity = 25;
-            consumeLiquid(Liquids.hydrogen, 1.0f / 62.5f).boost();
-            liquidBoostIntensity = 1.62f;
+            liquidBoostIntensity = 1.48f;
+            consumeLiquid(Liquids.hydrogen, 0.98f / 60f).boost();
+            consumeLiquid(Liquids.water, 2.0f / 60f);
             liquidCapacity = 30f;
 
-            description = "Drill that extracts resources from the ground. Can be boosted with hydrogen.";
+            description = "Drill that extracts resources from the ground. Requires water to function. Can be boosted with hydrogen.";
         }};
         iceDrill = new Fracker("ice-drill") {{
             localizedName = "Ice Drill";
@@ -118,6 +116,7 @@ public class IgomExtractionBlocks {
         crystalCollector = new AttributeCollector("crystal-collector") {{
             localizedName = "Crystal Collector";
             buildCostMultiplier = 2f;
+            squareSprite = false;
             size = 2;
             health = 360;
             armor = 2f;
@@ -136,10 +135,13 @@ public class IgomExtractionBlocks {
                 Lines.square(e.x, e.y, e.finpow() * size / 2f * 8f);
                 Lines.square(e.x, e.y, e.finpow() * (radius + size / 2.1f) * 8f);
             }));
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame() {{
+                flameColor = Color.valueOf("f5d6db");
+            }});
             consumePower(1f);
             craftTime = 225f;
         }};
-        aluminaExtractor = new AttributeCrafter("alumina-extractor") {{
+        /*aluminaExtractor = new AttributeCrafter("alumina-extractor") {{
             localizedName = "Alumina Extractor";
             buildCostMultiplier = 2f;
             size = 4;
@@ -161,6 +163,6 @@ public class IgomExtractionBlocks {
             consumeLiquid(Liquids.water, 0.25f);
             craftTime = 300f;
             squareSprite = false;
-        }};
+        }};*/
     }
 }

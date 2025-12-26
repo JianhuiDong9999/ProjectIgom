@@ -55,9 +55,10 @@ public class IgomTransportBlocks {
             requirements(Category.distribution, with(Items.graphite, 16, IgomItems.nickel, 8));
             health = 360;
             armor = 4f;
-            speed = 100f;
+            speed = 116f;
             range = 5;
             itemCapacity = 8;
+            bufferCapacity = 16;
 
             description = "Transports items over terrain and blocks. Outputs items evenly in three directions.";
         }};
@@ -69,7 +70,7 @@ public class IgomTransportBlocks {
             health = 180;
             armor = 3f;
             itemCapacity = 3;
-            speed = 21f;
+            speed = 43;
 
             description = "Allows the intersection of conveyors. Armored.";
         }};
@@ -88,21 +89,17 @@ public class IgomTransportBlocks {
 
             description = "Moves items forward. Armored. Cannot receive side inputs.";
         }};
-        bracedRouter = new DuctRouter("braced-router") {{
-            // TODO: Implement DirectionalRouter.
+        bracedRouter = new Router("braced-router") {{
             localizedName = "Braced Router";
             buildCostMultiplier = 4f;
-            drawTeamOverlay = false;
+            //drawTeamOverlay = false;
             requirements(Category.distribution, with(IgomItems.nickel, 8));
             health = 320;
             armor = 3f;
-            speed = 7.5f;
+            speed = 12f;
             solid = false;
-            regionRotated1 = 1;
-            saveConfig = false;
 
-            description = "Distributes items in three directions equally. " +
-                    "Moderately armored. Cannot backflow. Can be configured to become an item sorter.";
+            description = "Distributes items in three directions equally. Moderately armored.";
         }};
         bracedFlowGate = new OverflowDuct("braced-flow-gate") {{
             // TODO: Implement ToggleableOverflowGate.

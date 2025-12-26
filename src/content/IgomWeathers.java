@@ -20,7 +20,7 @@ public class IgomWeathers {
             yspeed = -0.8f;
             attrs.set(Attribute.light, -0.15f);
             color = Color.valueOf("dae1f1");
-            sound = Sounds.windhowl;
+            sound = Sounds.windHowl;
             soundVol = 0.05f;
         }};
         methaneSnow = new ParticleWeather("methane-snow"){{
@@ -33,7 +33,7 @@ public class IgomWeathers {
             yspeed = -0.9f;
             attrs.set(Attribute.light, -0.15f);
             color = Color.valueOf("aed0c7");
-            sound = Sounds.windhowl;
+            sound = Sounds.windHowl;
             soundVol = 0.05f;
         }};
         methaneRain = new RainWeather("methane-rain"){{

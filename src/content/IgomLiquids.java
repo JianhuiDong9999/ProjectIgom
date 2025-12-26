@@ -1,22 +1,38 @@
 package content;
 
 import arc.graphics.Color;
+import mindustry.content.Liquids;
 import mindustry.content.StatusEffects;
 import mindustry.type.CellLiquid;
 import mindustry.type.Liquid;
 public class IgomLiquids {
-    public static Liquid methane, oxygen, helium, liquidnitrogen, argon, corium;
+    public static Liquid methane, acid, oxygen, helium, liquidnitrogen, argon, corium;
     public static void load() {
         methane = new Liquid("liquid-methane", Color.valueOf("7db5a388")){{
             localizedName = "Methane";
-            flammability = 0.2f;
+            flammability = 0f;
             heatCapacity = 0.2f;
+            coolant = false;
             viscosity = 0.25f;
             temperature = 0.25f;
             description = "Used for chemical combustion and polymerization processes.";
+            details = "Highly abundant in liquid and gas form on Igom. Released by geologic activity.";
             boilPoint = 0.35f;
             // TODO: effect = IgomStatusEffects.methaneSoaked;
             barColor = Color.valueOf("aed0c6");
+        }};
+        acid = new Liquid("liquid-acid", Color.valueOf("c9d976")){{
+            localizedName = "Acid";
+            flammability = 0f;
+            heatCapacity = 0f;
+            coolant = false;
+            viscosity = 0.25f;
+            temperature = 0.5f;
+            description = "Used for batteries, ore refinement and alloying preparation. Highly corrosive.";
+            details = "Kept warm by the insulation systems within insulated conduits. Would otherwise freeze on the surface of Igom.";
+            boilPoint = 1.7f;
+            effect = StatusEffects.corroded;
+            barColor = Color.valueOf("c9d976");
         }};
         oxygen = new Liquid("liquid-oxygen", Color.valueOf("e3645b")) {{
             localizedName = "Oxygen";
@@ -27,8 +43,8 @@ public class IgomLiquids {
             //viscosity = 0.05f;
             //temperature = 0.25f;
             description = "Used as a propulsion medium and as reactant for oxidation reactions.";
-            details = "A product of photosynthesis and a reactant for cellular respiration. " +
-                    "Integral to the cultivation of carbon-based biomass.";
+            details = "Also a product of photosynthesis and a reactant for cellular respiration. " +
+                    "Though Igom does not contain any such lifeforms yet.";
             barColor = Color.valueOf("ff8880");
         }};
         helium = new Liquid("liquid-helium", Color.valueOf("ccffff")) {{
@@ -44,6 +60,7 @@ public class IgomLiquids {
             temperature = 0.15f;
             boilPoint = 0.25f;
             effect = StatusEffects.freezing;
+            description = "Used as coolant for turrets and production. Chemically inert.";
             barColor = Color.valueOf("e4d7f4");
         }};
         argon = new Liquid("liquid-argon", Color.valueOf("ad7cbf")) {{
@@ -55,6 +72,7 @@ public class IgomLiquids {
         corium = new CellLiquid("liquid-corium", Color.valueOf("abd1bc")) {{
             localizedName = "Corium";
             heatCapacity = 0.5f;
+            coolant = false;
             viscosity = 0.8f;
             // TODO: radioactivity = 2f;
             temperature = 2f;
@@ -64,9 +82,9 @@ public class IgomLiquids {
             colorFrom = Color.valueOf("749081");
             colorTo = Color.valueOf("dbfeea");
 
-            description = "A liquefied mixture of various highly-radioactive elements. " +
-                    "Viscous. Can be refined into unstable materials and other radiation products.";
-            details = "Highly unstable and dynamic in composition. Requires advanced instruments to analyze. " +
+            description = "Liquefied mixture of various radioactive elements. " +
+                    "Viscous. Can be used as heating or refined into powerful materials with advanced methods.";
+            details = "A crude sludge, highly unstable and dynamic in composition. " +
                     "Continuous internal fission capable of generating immense amounts of heat.";
         }};
     }

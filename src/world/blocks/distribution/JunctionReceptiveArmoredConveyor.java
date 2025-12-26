@@ -26,7 +26,7 @@ public class JunctionReceptiveArmoredConveyor extends ArmoredConveyor {
         @Override
         public boolean acceptItem(Building source, Item item){
             return super.acceptItem(source, item) && (source.block instanceof Conveyor
-                    || Edges.getFacingEdge(source.tile(), tile).relativeTo(tile) == rotation
+                    || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation
                     || !source.proximity.contains(this)
                     || source.block instanceof Junction);
         }

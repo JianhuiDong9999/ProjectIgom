@@ -67,7 +67,7 @@ public class IgomCoreBlocks {
             requiresCoreZone = true;
 
             buildCostMultiplier = 0.2f;
-            unitCapModifier = 4;
+            unitCapModifier = 32;
             researchCostMultiplier = 0.07f;
         }};
     }

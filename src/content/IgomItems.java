@@ -6,7 +6,7 @@ import mindustry.type.Item;
 
 public class IgomItems {
     public static Item nickel, sulfur, quartz, alumina, chromium, aluminum, lithium, cobalt, technetium,
-            graphene, sulfide, polyethylene, acrylic, polymerFabric, metaPlastic, niPolymer, cermet, niChrome,
+            carbonFabric, sulfide, polyethylene, acrylic, polymerFabric, metaPlastic, niPolymer, cermet, niChrome,
             nitride, niCobalt, entropyAlloy, quantumFabric,
     phasePanel, strongium;
     // cermet is chromium + alumina
@@ -18,10 +18,10 @@ public class IgomItems {
         nickel = new Item("item-nickel", Color.valueOf("8fc79d")) {{
             localizedName = "Nickel";
             healthScaling = 0.4f;
-            hardness = 3;
+            hardness = 2;
             cost = 1.5f;
             description = "Used in various electric, industrial and construction processes. Can serve as ammunition.";
-            details = "An abundant metal on Igom. Strong. Malleable. Viable to serve as the base of this planet's tech tree.";
+            details = "An abundant metal on Igom. Strong. Malleable. Viable to serve as the foundation of this planet's tech tree.";
         }};
         sulfur = new Item("item-sulfur", Color.valueOf("d0bd2f")) {{
             localizedName = "Sulfur";
@@ -48,7 +48,7 @@ public class IgomItems {
             hardness = 5;
             cost = 1.8f;
         }};
-        aluminum = new Item("item-aluminum", Color.valueOf("d15454")) {{
+        aluminum = new Item("item-aluminum", Color.valueOf("e45b3f")) {{
             localizedName = "Aluminum";
             healthScaling = 0.4f;
             hardness = 2;
@@ -76,9 +76,9 @@ public class IgomItems {
             cost = 1.4f;
             radioactivity = 1.15f;
         }};
-        graphene = new Item("item-graphene", Color.valueOf("7287b3")) {{
-            localizedName = "Graphene";
-            healthScaling = 0f;
+        carbonFabric = new Item("item-carbon-fabric", Color.valueOf("7287b3")) {{
+            localizedName = "Carbon Fabric";
+            healthScaling = 0.2f;
             cost = 1.2f;
         }};
         sulfide = new Item("item-sulfide", Color.valueOf("677953")) {{

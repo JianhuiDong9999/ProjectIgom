@@ -1,5 +1,6 @@
 package content.blocks;
 
+import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -62,13 +63,13 @@ public class IgomPowerBlocks {
         // Power parts
         nickelBattery = new Battery("nickel-battery"){{
             localizedName = "Nickel Battery";
-            size = 1;
-            buildCostMultiplier = 2f;
+            size = 2;
+            buildCostMultiplier = 1f;
             drawTeamOverlay = false;
             health = 200;
             armor = 2;
-            requirements(Category.power, with(IgomItems.nickel, 20, Items.graphite, 20));
-            consumePowerBuffered(6000f);
+            requirements(Category.power, with(IgomItems.nickel, 40, Items.graphite, 80));
+            consumePowerBuffered(20000f);
             emptyLightColor = Color.valueOf("e6e0da");
             fullLightColor = Color.valueOf("ff8266");
             baseExplosiveness = 0.5f;
@@ -81,7 +82,7 @@ public class IgomPowerBlocks {
             drawTeamOverlay = false;
             health = 850;
             armor = 5;
-            requirements(Category.power, with(IgomItems.nickel, 30, Items.graphite, 10));
+            requirements(Category.power, with(IgomItems.nickel, 30, Items.graphite, 30, Items.silicon, 15));
             laserColor1 = Color.valueOf("ffffff");
             laserColor2 = Color.valueOf("ffdfbf");
             laserScale = 0.5f;
@@ -91,7 +92,7 @@ public class IgomPowerBlocks {
         }};
         connectorNode = new PowerNode("connector-node") {{
             localizedName = "Connector Node";
-            laserRange = 3f;
+            laserRange = 6f;
             size = 1;
             buildCostMultiplier = 2f;
             drawTeamOverlay = false;
@@ -107,12 +108,14 @@ public class IgomPowerBlocks {
         // Generators
         insulatedTurbineCondenser = new ThermalGenerator("insulated-turbine-condenser"){{
             localizedName = "Insulated Turbine Condenser";
+            description = "Generates power when placed on vents, condenses and collects a small amount of water.";
+            details = "Technology originally designed for power generation on hot, volcanic planets such as Erekir. Modifications allow this iteration to generate substantial power from Igom's cryo-volcanic system.";
             buildCostMultiplier = 1.5f;
             drawTeamOverlay = false;
             health = 1250;
             armor = 4;
             squareSprite = false;
-            requirements(Category.power, with(Items.graphite, 60, IgomItems.nickel, 180));
+            requirements(Category.power, with(Items.graphite, 180, IgomItems.nickel, 80));
             attribute = Attribute.steam;
             group = BlockGroup.liquids;
             displayEfficiencyScale = 1f / 9f;
@@ -131,13 +134,13 @@ public class IgomPowerBlocks {
             }).layer(Layer.bullet - 1f);
             effectChance = 0.04f;
             size = 3;
-            ambientSound = Sounds.hum;
+            ambientSound = Sounds.loopHum;
             ambientSoundVolume = 0.06f;
             drawer = new DrawMulti(new DrawDefault(), new DrawBlurSpin("-rotator", 0.6f * 9f){{
                 blurThresh = 0.01f;
             }});
             hasLiquids = true;
-            outputLiquid = new LiquidStack(Liquids.water, 16f / 60f / 9f);
+            outputLiquid = new LiquidStack(Liquids.water, 8.25f / 60f / 9f);
             liquidCapacity = 80f;
             fogRadius = 3;
         }};

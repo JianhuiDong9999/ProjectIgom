@@ -17,7 +17,7 @@ description: "Adds a new planet named Igom. \nCredit to Saigononozomi for the At
 version: 1.0
 
 #the minimum game build required to run this mod
-minGameVersion: 145
+minGameVersion: 154
 
 #this is a java mod
 java: true

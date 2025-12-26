@@ -1,5 +1,6 @@
 package Igom;
 
+import arc.Core;
 import arc.Events;
 import arc.util.*;
 import content.*;
