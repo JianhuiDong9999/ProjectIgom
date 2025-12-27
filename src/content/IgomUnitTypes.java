@@ -101,20 +101,21 @@ public class IgomUnitTypes {
             weapons.add(new Weapon("project-igom-halberd-cannon"){{
                 top = false;
                 reload = 72f;
-                shoot = new ShootSpread(5, 2f);
+                shoot = new ShootSpread(6, 1.5f);
                 recoil = 3f;
                 recoilPow = 2f;
                 inaccuracy = 2f;
                 x = 8f;
                 ejectEffect = Fx.casing2;
                 shootSound = Sounds.shootDiffuse;
-                bullet = new BasicBulletType(8f, 36){{
+                bullet = new BasicBulletType(7f, 36){{
                     frontColor = Color.valueOf("ffffff");
                     backColor = Color.valueOf("657de2");
-                    width = 20f;
+                    width = 16f;
                     height = 16f;
-                    lifetime = 32f;
+                    lifetime = 24f;
                     knockback = 1.2f;
+                    shootEffect = Fx.shootBigSmoke;
                     hitEffect = Fx.hitBulletBig;
                     trailColor = Color.valueOf("657de2");
                     trailLength = 2;

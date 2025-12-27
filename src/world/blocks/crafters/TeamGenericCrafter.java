@@ -24,5 +24,6 @@ public class TeamGenericCrafter extends GenericCrafter {
             super.draw();
             drawTeamTop();
         }
+
     }
 }

@@ -56,7 +56,7 @@ public class IgomCoreBlocks {
 
             isFirstTier = true;
             unitType = IgomUnitTypes.detect;
-            health = 16000;
+            health = 24000;
             itemCapacity = 12800;
             size = 4;
             //radius = 10;

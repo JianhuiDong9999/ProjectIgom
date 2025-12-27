@@ -1,42 +1,22 @@
 package content.blocks;
 
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Lines;
 import content.IgomItems;
 import content.IgomLiquids;
-import content.IgomUnitTypes;
-import graphics.IgomCacheLayer;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
-import mindustry.content.StatusEffects;
-import mindustry.entities.Effect;
-import mindustry.entities.effect.MultiEffect;
 import mindustry.gen.Sounds;
-import mindustry.graphics.CacheLayer;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.Wall;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.environment.*;
-import mindustry.world.blocks.power.PowerNode;
-import mindustry.world.blocks.power.ThermalGenerator;
-import mindustry.world.blocks.production.AttributeCrafter;
-import mindustry.world.blocks.production.Drill;
-import mindustry.world.blocks.production.Fracker;
-import mindustry.world.blocks.production.GenericCrafter;
-import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.draw.*;
-import mindustry.world.meta.Attribute;
-import type.MethaneFloor;
-import type.MethaneMudFloor;
-import world.blocks.IgomAttribute;
+import mindustry.world.meta.BlockGroup;
 import world.blocks.crafters.TeamGenericCrafter;
-import world.blocks.distribution.JunctionReceptiveArmoredConveyor;
-import world.blocks.extraction.AttributeCollector;
+import world.draw.DrawInsulatedElectrolyzerLiquidTiles;
+import world.draw.DrawRotatableBlock;
+import world.draw.DrawRotatableGlowRegion;
 
 import static mindustry.type.ItemStack.with;
 
@@ -59,7 +39,7 @@ public class IgomCrafterBlocks {
                     armor = 4f;
                     craftEffect = Fx.none;
                     outputItem = new ItemStack(Items.silicon, 12);
-                    outputLiquid = new LiquidStack(IgomLiquids.oxygen, 4f / 60);
+                    outputLiquid = new LiquidStack(IgomLiquids.oxygen, 8f / 60);
                     ignoreLiquidFullness = true;
                     craftTime = 60f;
                     size = 4;
@@ -82,6 +62,49 @@ public class IgomCrafterBlocks {
                     ambientSoundVolume = 0.2F;
                     consumeItems(ItemStack.with(Items.graphite, 4, Items.sand, 16));
                     consumePower(12.0F);
+            }};
+
+            insulatedElectrolyzer = new TeamGenericCrafter("insulated-electrolyzer"){{
+                    requirements(Category.crafting, with(IgomItems.nickel, 80, Items.graphite, 140, Items.silicon, 180, IgomItems.lithium, 60));
+                    size = 3;
+
+                    craftTime = 10f;
+                    rotate = true;
+                    invertFlip = true;
+                    group = BlockGroup.liquids;
+                    hasLiquids = true;
+                    itemCapacity = 0;
+
+                    liquidCapacity = 40f;
+
+                    consumeLiquid(Liquids.water, 12f / 60f);
+                    consumePower(3f);
+                    drawer = new DrawMulti(
+                            new DrawRegion("-bottom"),
+                            new DrawInsulatedElectrolyzerLiquidTiles(IgomLiquids.oxygen, Liquids.hydrogen, Liquids.water),
+                            new DrawRotatableGlowRegion(){{
+                                    alpha = 0.7f;
+                                    color = Color.valueOf("c4bdf3");
+                                    glowIntensity = 0.3f;
+                                    glowScale = 6f;
+                            }},
+                            new DrawBubbles(Color.valueOf("7693e3")){{
+                                    sides = 10;
+                                    recurrence = 3f;
+                                    spread = 6;
+                                    radius = 1.5f;
+                                    amount = 20;
+                            }},
+                            new DrawRotatableBlock(),
+                            new DrawLiquidOutputs()
+                    );
+
+                    ambientSound = Sounds.loopElectricHum;
+                    ambientSoundVolume = 0.08f;
+
+                    regionRotated1 = 3;
+                    outputLiquids = LiquidStack.with(IgomLiquids.oxygen, 6f / 60, Liquids.hydrogen, 6f / 60);
+                    liquidOutputDirections = new int[]{1, 3};
             }};
     }
 }
