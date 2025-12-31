@@ -18,7 +18,7 @@ jobs:
       - name: Extract Mod Info
         id: mod_info
         run: |
-          MOD_DISPLAY_NAME=$(jq -r '.displayName' mod.json)
+          MOD_DISPLAY_NAME=$(jq -r '.displayName' mod.hjson)
           MOD_DISPLAY_NAME_CLEAN=$(echo "$MOD_DISPLAY_NAME" | tr -d ' ')
           DEXED_JAR_NAME="${MOD_DISPLAY_NAME_CLEAN}.jar"
           DEXED_JAR_PATH="main/build/libs/${DEXED_JAR_NAME}"
