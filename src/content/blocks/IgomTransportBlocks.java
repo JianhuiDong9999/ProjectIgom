@@ -1,48 +1,19 @@
 package content.blocks;
 
-import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Lines;
 import content.IgomItems;
-import content.IgomLiquids;
-import content.IgomUnitTypes;
-import graphics.IgomCacheLayer;
-import mindustry.content.Fx;
 import mindustry.content.Items;
-import mindustry.content.Liquids;
-import mindustry.content.StatusEffects;
-import mindustry.entities.Effect;
-import mindustry.entities.effect.MultiEffect;
-import mindustry.gen.Sounds;
-import mindustry.graphics.CacheLayer;
 import mindustry.type.Category;
-import mindustry.type.ItemStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.environment.*;
-import mindustry.world.blocks.power.PowerNode;
-import mindustry.world.blocks.power.ThermalGenerator;
-import mindustry.world.blocks.production.AttributeCrafter;
-import mindustry.world.blocks.production.Drill;
-import mindustry.world.blocks.production.Fracker;
-import mindustry.world.blocks.storage.CoreBlock;
-import mindustry.world.draw.DrawDefault;
-import mindustry.world.draw.DrawGlowRegion;
-import mindustry.world.draw.DrawLiquidRegion;
-import mindustry.world.draw.DrawMulti;
-import mindustry.world.meta.Attribute;
-import type.MethaneFloor;
-import type.MethaneMudFloor;
-import world.blocks.IgomAttribute;
-import world.blocks.distribution.JunctionReceptiveArmoredConveyor;
-import world.blocks.extraction.AttributeCollector;
+import world.blocks.transport.JunctionReceptiveArmoredConveyor;
+import world.blocks.transport.ToggleableArmoredConveyor;
+import world.blocks.transport.ToggleableFlowGate;
 
 import static mindustry.type.ItemStack.with;
 
 public class IgomTransportBlocks {
     public static Block
-    bracedConveyor, bracedJunction, bracedRouter, bracedFlowGate, reinforcedDistributor, receptiveConveyor, bracedBridge,
+    bracedConveyor, bracedJunction, bracedRouter, bracedFlowGate, reinforcedDistributor, bracedBridge,
             fortifiedConveyor, fortifiedRouter, fortifiedDistributor, fortifiedFlowGate, fortifiedBridge;
 
     public static void load(){
@@ -74,11 +45,11 @@ public class IgomTransportBlocks {
 
             description = "Allows the intersection of conveyors. Armored.";
         }};
-        bracedConveyor = new JunctionReceptiveArmoredConveyor("braced-conveyor") {{
+        bracedConveyor = new ToggleableArmoredConveyor("braced-conveyor") {{
             // TODO: Implement ToggleableConveyor with functioning teamRegion.
             localizedName = "Braced Conveyor";
             requirements(Category.distribution, with(IgomItems.nickel, 2));
-            buildCostMultiplier = 6f;
+            buildCostMultiplier = 5f;
             drawTeamOverlay = false;
             health = 180;
             armor = 3f;
@@ -86,8 +57,9 @@ public class IgomTransportBlocks {
             displayedSpeed = 8f;
             bridgeReplacement = bracedBridge;
             junctionReplacement = bracedJunction;
+            // noSideBlend = false;
 
-            description = "Moves items forward. Armored. Cannot receive side inputs.";
+            description = "Moves items forward. Armored. Can be toggled to receive non-conveyor and non-junction side inputs.";
         }};
         bracedRouter = new Router("braced-router") {{
             localizedName = "Braced Router";
@@ -96,12 +68,11 @@ public class IgomTransportBlocks {
             requirements(Category.distribution, with(IgomItems.nickel, 8));
             health = 320;
             armor = 3f;
-            speed = 12f;
             solid = false;
 
             description = "Distributes items in three directions equally. Moderately armored.";
         }};
-        bracedFlowGate = new OverflowDuct("braced-flow-gate") {{
+        bracedFlowGate = new ToggleableFlowGate("braced-flow-gate") {{
             // TODO: Implement ToggleableOverflowGate.
             localizedName = "Braced Flow Gate";
             buildCostMultiplier = 4f;
@@ -109,8 +80,7 @@ public class IgomTransportBlocks {
             requirements(Category.distribution, with(Items.graphite, 12, IgomItems.nickel, 8));
             health = 320;
             armor = 3f;
-            itemCapacity = 1;
-            speed = 7.5f;
+            speed = 8f;
             solid = false;
             regionRotated1 = 1;
         }};

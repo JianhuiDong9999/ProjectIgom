@@ -123,6 +123,80 @@ public class IgomUnitTypes {
                 }};
             }});
         }};
+        EntityMapping.nameMap.put("project-igom-neutrino", UnitEntity::create);
+        neutrino = new UnitType("neutrino") {{
+            localizedName = "Neutrino";
+            outlineColor = Color.valueOf("3a4752");
+
+            flying = true;
+            speed = 2.4f;
+            accel = 0.05f;
+            drag = 0.04f;
+            hitSize = 14f;
+            engineSize = 3f;
+            engineOffset = 4f;
+            rotateSpeed = 2.4f;
+            health = 420;
+            armor = 2f;
+            weapons.add(new Weapon("project-igom-neutrino-blaster"){{
+                top = false;
+                mirror = false;
+                alternate = false;
+                reload = 150f;
+                recoil = 1f;
+                recoilPow = 1f;
+                inaccuracy = 10f;
+                x = 4f;
+                ejectEffect = Fx.casing1;
+                circleTarget = true;
+                circleTargetRadius = 120f;
+                shootSound = Sounds.shootElude;
+                shoot.shots = 4;
+                shoot.shotDelay = 12f;
+                shoot.firstShotDelay = 6f;
+                bullet = new BasicBulletType(5.6f, 22){{
+                    frontColor = Color.valueOf("ffffff");
+                    backColor = Color.valueOf("657de2");
+                    width = 8f;
+                    height = 12f;
+                    lifetime = 16f;
+                    shootEffect = Fx.shootSmallSmoke;
+                    hitEffect = Fx.hitBulletSmall;
+                    trailColor = Color.valueOf("657de2");
+                    trailLength = 3;
+                    trailWidth = 1.5f;
+                }};
+            }},
+                    new Weapon("project-igom-neutrino-blaster"){{
+                        top = false;
+                        mirror = false;
+                        flipSprite = true;
+                        alternate = false;
+                        reload = 150f;
+                        recoil = 1f;
+                        recoilPow = 1f;
+                        inaccuracy = 10f;
+                        x = -4f;
+                        ejectEffect = Fx.casing1;
+                        circleTarget = true;
+                        circleTargetRadius = 120f;
+                        shootSound = Sounds.shootElude;
+                        shoot.shots = 4;
+                        shoot.shotDelay = 12f;
+                        bullet = new BasicBulletType(5.6f, 22){{
+                            frontColor = Color.valueOf("ffffff");
+                            backColor = Color.valueOf("657de2");
+                            width = 8f;
+                            height = 12f;
+                            lifetime = 16f;
+                            shootEffect = Fx.shootSmallSmoke;
+                            hitEffect = Fx.hitBulletSmall;
+                            trailColor = Color.valueOf("657de2");
+                            trailLength = 3;
+                            trailWidth = 1.5f;
+                        }};
+                    }});
+        }};
         EntityMapping.nameMap.put("project-igom-detect", PayloadUnit::create);
         detect = new UnitType("detect") {{
             outlineColor = Color.valueOf("3a4752");
@@ -206,10 +280,11 @@ public class IgomUnitTypes {
                             keepVelocity = false;
                             ignoreRotation = true;
                             speed = 0f;
-                            splashDamageRadius = 32f;
-                            splashDamage = 24f;
-                            splashDamagePierce = true;
-                            healPercent = 7.5f;
+                            splashDamageRadius = 48f;
+                            splashDamage = 64f;
+                            splashDamagePierce = false;
+                            healAmount = 40f;
+                            healPercent = 2.5f;
                             healColor = Color.valueOf("99e2ff");
                             hitEffect = despawnEffect = new WrapEffect(Fx.dynamicSpikes, Color.valueOf("99e2ff"), 32f);
                             hitShake = 2f;

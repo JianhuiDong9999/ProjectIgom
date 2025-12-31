@@ -404,73 +404,73 @@ public class IgomEnvironmentBlocks {
         }};
         //  **  liquid natural environmental blocks  **
         //Sand methane. Can extract either sand or methane depending on the extraction block used.
-        fineRegolithMethane = new MethaneFloor("fine-regolith-methane", 0.5f){{
+        fineRegolithMethane = new MethaneFloor("fine-regolith-methane", 0.1f){{
             localizedName = "Submerged Fine Regolith";
             speedMultiplier = 0.7f;
             variants = 3;
             itemDrop = Items.sand;
             playerUnmineable = true;
         }};
-        redClayMethane = new MethaneFloor("red-clay-methane", 0.5f){{
+        redClayMethane = new MethaneFloor("red-clay-methane", 0.1f){{
             localizedName = "Submerged Red Clay";
             speedMultiplier = 0.6f;
             variants = 3;
             attributes.set(IgomAttribute.alumina, 0.500f);
         }};
-        packedRedClayMethane = new MethaneFloor("packed-red-clay-methane", 0.5f){{
+        packedRedClayMethane = new MethaneFloor("packed-red-clay-methane", 0.1f){{
             localizedName = "Submerged Packed Red Clay";
             speedMultiplier = 0.7f;
             variants = 3;
             attributes.set(IgomAttribute.alumina, 2.000f);
         }};
-        andesiteSandMethane = new MethaneFloor("andesite-sand-methane", 0.5f){{
+        andesiteSandMethane = new MethaneFloor("andesite-sand-methane", 0.1f){{
             localizedName = "Submerged Andesite Sand";
             speedMultiplier = 0.7f;
             variants = 3;
             itemDrop = Items.sand;
             playerUnmineable = true;
         }};
-        basaltPlateMethane = new MethaneFloor("basalt-plate-methane", 0.5f){{
+        basaltPlateMethane = new MethaneFloor("basalt-plate-methane", 0.1f){{
             localizedName = "Submerged Basalt Plates";
             speedMultiplier = 0.65f;
             variants = 3;
         }};
-        denseBasaltPlateMethane = new MethaneFloor("dense-basalt-plate-methane", 0.5f){{
+        denseBasaltPlateMethane = new MethaneFloor("dense-basalt-plate-methane", 0.1f){{
             localizedName = "Submerged Dense Basalt Plates";
             speedMultiplier = 0.7f;
             variants = 3;
         }};
-        methane = new MethaneFloor("shallow-methane", 1.0f){{
+        methane = new MethaneFloor("shallow-methane", 0.2f){{
             localizedName = "Methane";
             speedMultiplier = 0.6f;
             variants = 2;
             albedo = 0.9f;
             supportsOverlay = true;
         }};
-        deepMethane = new MethaneFloor("deep-methane", 2f){{
+        deepMethane = new MethaneFloor("deep-methane", 0.4f){{
             localizedName = "Deep Methane";
             speedMultiplier = 0.3f;
             variants = 2;
             drownTime = 400f;
         }};
-        saturatedTopsoil = new MethaneMudFloor("saturated-topsoil", 0.35f) {{
+        saturatedTopsoil = new MethaneMudFloor("saturated-topsoil", 0.06f) {{
             localizedName = "Saturated Topsoil";
             speedMultiplier = 0.65f;
             variants = 3;
         }};
-        saturatedDenseTopsoil = new MethaneMudFloor("saturated-dense-topsoil", 0.35f) {{
+        saturatedDenseTopsoil = new MethaneMudFloor("saturated-dense-topsoil", 0.06f) {{
             localizedName = "Saturated Dense Topsoil";
             speedMultiplier = 0.7f;
             mapColor = Color.valueOf("473f39");
             variants = 3;
         }};
-        topsoilMethane = new MethaneFloor("topsoil-methane", 0.5f){{
+        topsoilMethane = new MethaneFloor("topsoil-methane", 0.1f){{
             localizedName = "Submerged Topsoil";
             cacheLayer = IgomCacheLayer.methane;
             speedMultiplier = 0.65f;
             variants = 3;
         }};
-        denseTopsoilMethane = new MethaneFloor("dense-topsoil-methane", 0.5f){{
+        denseTopsoilMethane = new MethaneFloor("dense-topsoil-methane", 0.1f){{
             localizedName = "Submerged Dense Topsoil";
             cacheLayer = IgomCacheLayer.methane;
             speedMultiplier = 0.7f;

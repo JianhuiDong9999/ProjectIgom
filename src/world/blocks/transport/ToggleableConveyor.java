@@ -1,15 +1,13 @@
-package world.blocks.distribution;
+package world.blocks.transport;
 
 import arc.Core;
 import arc.Graphics;
 import arc.audio.Sound;
-import arc.graphics.Texture;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.struct.Queue;
-import arc.struct.Seq;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.Vars;
@@ -18,10 +16,12 @@ import mindustry.entities.Effect;
 import mindustry.gen.Building;
 import mindustry.gen.Sounds;
 import mindustry.logic.LAccess;
-import mindustry.world.blocks.distribution.ArmoredConveyor;
+import mindustry.type.Item;
+import mindustry.world.Edges;
+import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
+import mindustry.world.blocks.distribution.Junction;
 
-import static mindustry.Vars.pathfinder;
 import static mindustry.Vars.player;
 /**
  *  TODO: Implement class features.
@@ -49,7 +49,7 @@ public class ToggleableConveyor extends Conveyor {
     }
     public void load() {
         super.load();
-        openRegion = Core.atlas.find(this.name + "-open", "braced-conveyor-open");
+        openRegion = Core.atlas.find(this.name + "-open");
     }
     public class ToggleableConveyorBuild extends ConveyorBuild {
         public boolean open = false;
@@ -62,7 +62,25 @@ public class ToggleableConveyor extends Conveyor {
             if(sensor == LAccess.enabled) return open ? 1 : 0;
             return super.sense(sensor);
         }
-
+        public boolean acceptItem(Building source, Item item) {
+            if(!open) {
+                return super.acceptItem(source, item) && (source.block instanceof Conveyor
+                        || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation
+                        || !source.proximity.contains(this)
+                        || source.block instanceof Junction);
+            }
+            if (this.len >= 3) {
+                return false;
+            } else {
+                Tile facing = Edges.getFacingEdge(source.tile, this.tile);
+                if (facing == null) {
+                    return false;
+                } else {
+                    int direction = Math.abs(facing.relativeTo(this.tile.x, this.tile.y) - this.rotation);
+                    return (direction == 0 && this.minitem >= 0.4F || direction % 2 == 1 && this.minitem > 0.7F) && (!source.block.rotate || this.next != source);
+                }
+            }
+        }
         @Override
         public void control(LAccess type, double p1, double p2, double p3, double p4){
             if(type == LAccess.enabled){

@@ -40,6 +40,7 @@ public class ProjectIgom extends Mod {
     @Override
     public void loadContent() {
         Log.info("Loading ProjectIgom");
+        IgomStatusEffects.load();
         IgomItems.load();
         IgomLiquids.load();
         IgomShaders.init();

@@ -11,9 +11,12 @@ import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
+import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.draw.*;
 import mindustry.world.meta.BlockGroup;
+import mindustry.world.meta.Env;
 import world.blocks.crafters.TeamGenericCrafter;
+import world.draw.DrawGlowWeave;
 import world.draw.DrawInsulatedElectrolyzerLiquidTiles;
 import world.draw.DrawRotatableBlock;
 import world.draw.DrawRotatableGlowRegion;
@@ -22,7 +25,7 @@ import static mindustry.type.ItemStack.with;
 
 public class IgomCrafterBlocks {
     public static Block
-    reinforcedArcFurnace, grapheneSynthesizer, sulfidationChamber, insulatedElectrolyzer, ethyleneSynthesizer, polymerPress, nichromeCrucible,
+    reinforcedArcFurnace, metafiberWeaver, cermetKiln, sulfidationChamber, insulatedElectrolyzer, ethyleneSynthesizer, polymerPress, nichromeCrucible,
             hydrogenRefprmer, miniCapacitorFactory, aluminumSmelter, crystalArcFurnace, lithiumKiln, nitrideSynthesizer, nickelCobaltFurnace,
             plasticAlloyWeaver, phaseKnitter, phasePlasticWeaver, vitrifier, cyanogenCatalyzer, nitrogenConcentrator, condenser,
             argonConcentrator, highEntropyAlloyFurnace, antimatterSolidifier, technetiumConverter, phaseKiln, subatomicCompressor;
@@ -33,7 +36,7 @@ public class IgomCrafterBlocks {
             //no reference is needed here since they can be looked up by name later
             reinforcedArcFurnace = new TeamGenericCrafter("reinforced-arc-furnace") {{
                     localizedName = "Reinforced Arc Furnace";
-                    requirements(Category.crafting, with(Items.graphite, 480, IgomItems.nickel, 280));
+                    requirements(Category.crafting, with(Items.graphite, 320, IgomItems.nickel, 180));
                     squareSprite = false;
                     health = 6540;
                     armor = 4f;
@@ -65,7 +68,8 @@ public class IgomCrafterBlocks {
             }};
 
             insulatedElectrolyzer = new TeamGenericCrafter("insulated-electrolyzer"){{
-                    requirements(Category.crafting, with(IgomItems.nickel, 80, Items.graphite, 140, Items.silicon, 180, IgomItems.lithium, 60));
+                    localizedName = "Insulated Electrolyzer";
+                    requirements(Category.crafting, with(IgomItems.nickel, 80, Items.graphite, 140, Items.silicon, 80, IgomItems.lithium, 60));
                     size = 3;
 
                     craftTime = 10f;
@@ -105,6 +109,34 @@ public class IgomCrafterBlocks {
                     regionRotated1 = 3;
                     outputLiquids = LiquidStack.with(IgomLiquids.oxygen, 6f / 60, Liquids.hydrogen, 6f / 60);
                     liquidOutputDirections = new int[]{1, 3};
+            }};
+            metafiberWeaver = new TeamGenericCrafter("metafiber-weaver"){{
+                    localizedName = "Metafiber Weaver";
+                    requirements(Category.crafting, with(IgomItems.nickel, 160, Items.silicon, 320, IgomItems.lithium, 80));
+                    craftEffect = Fx.pulverizeMedium;
+                    outputItem = new ItemStack(IgomItems.metafiber, 4);
+                    craftTime = 4 * 60f;
+                    size = 3;
+                    health = 4260;
+                    armor = 12f;
+                    hasPower = true;
+                    drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(IgomLiquids.oxygen) {{
+                            padTop = padBottom = padLeft = padRight = 4f;
+                            alpha = 0.3f;
+                    }}, new DrawGlowWeave() {{
+                            glowColor = Color.valueOf("d995b7");
+                            rotateSpeed = 1.25f;
+                    }}, new DrawDefault());
+                    envEnabled |= Env.space;
+
+                    ambientSound = Sounds.loopTech;
+                    ambientSoundVolume = 0.02f;
+
+                    consumeItems(with(Items.graphite, 12, IgomItems.nickel, 2));
+                    consumeLiquid(IgomLiquids.oxygen, 10f / 60f);
+                    consumePower(780f / 60f);
+                    itemCapacity = 40;
+                    liquidCapacity = 60f;
             }};
     }
 }

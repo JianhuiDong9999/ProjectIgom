@@ -1,4 +1,4 @@
-package world.blocks.distribution;
+package world.blocks.transport;
 
 import mindustry.world.blocks.distribution.Router;
 /**

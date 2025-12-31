@@ -2,19 +2,22 @@ package content.blocks;
 
 import content.IgomItems;
 import mindustry.content.Items;
+import mindustry.content.Liquids;
 import mindustry.type.Category;
 import mindustry.world.Block;
 import mindustry.world.blocks.liquid.ArmoredConduit;
 import mindustry.world.blocks.liquid.LiquidJunction;
 import mindustry.world.blocks.liquid.LiquidRouter;
+import mindustry.world.blocks.production.Pump;
 import world.blocks.liquid.ClearLiquidBridge;
+import world.blocks.liquid.StatPump;
 
 import static mindustry.type.ItemStack.with;
 
 public class IgomLiquidBlocks {
     public static Block
     // liquid blocks
-    pressurePump, pistonPump, fluxPump, insulatedConduitJunction, insulatedConduitBridge,  insulatedConduit,
+    insulatedPump, largeInsulatedPump, fluxPump, insulatedConduitJunction, insulatedConduitBridge,  insulatedConduit,
             insulatedConduitRouter, insulatedLiquidContainer, insulatedLiquidTank,
             fortifiedConduit, fortifiedLiquidContainer, fortifiedLiquidTank, fortifiedLiquidBridge;
     public static void load(){
@@ -55,7 +58,7 @@ public class IgomLiquidBlocks {
         }};
         insulatedConduit = new ArmoredConduit("insulated-conduit") {{
             localizedName = "Insulated Conduit";
-            requirements(Category.liquid, with(Items.graphite, 3, IgomItems.nickel, 2));
+            requirements(Category.liquid, with(Items.graphite, 2, IgomItems.nickel, 2));
             buildCostMultiplier = 3f;
             health = 240;
             armor = 4f;
@@ -65,6 +68,20 @@ public class IgomLiquidBlocks {
             bridgeReplacement = insulatedConduitBridge;
             junctionReplacement = insulatedConduitJunction;
             description = "Transports liquids. Insulation system maintains pressure and temperature preventing liquids from changing state.";
+        }};
+        insulatedPump = new StatPump("insulated-pump") {{
+            localizedName = "Insulated Pump";
+            requirements(Category.liquid, with(IgomItems.nickel, 80, Items.graphite, 120, Items.silicon, 60));
+            buildCostMultiplier = 2f;
+            size = 3;
+            squareSprite = false;
+            health = 1920;
+            armor = 4f;
+            liquidCapacity = 120;
+            liquidPressure = 1f;
+            pumpAmount = 60f / 60f / 4f;
+            consumeLiquid(Liquids.hydrogen, 2f / 60f);
+            consumeItem(Items.graphite);
         }};
     }
 }

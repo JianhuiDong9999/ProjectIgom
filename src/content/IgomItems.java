@@ -6,11 +6,12 @@ import mindustry.type.Item;
 
 public class IgomItems {
     public static Item nickel, sulfur, quartz, alumina, chromium, aluminum, lithium, cobalt, technetium,
-            carbonFabric, sulfide, polyethylene, acrylic, polymerFabric, metaPlastic, niPolymer, cermet, niChrome,
+            metafiber, hydride, polyethylene, acrylic, polymerFabric, metaPlastic, niPolymer, cermet, niChrome,
             nitride, niCobalt, entropyAlloy, quantumFabric,
     phasePanel, strongium;
     // cermet is chromium + alumina
     // sulfide is nickel sulfide, used in batteries, capacitors, as a catalyst in electrolyzers
+    // synthesize blast compound with sand, sulfur, graphite, hydrogen
     public static void load() {
 
         Items.graphite.hardness = 1;
@@ -61,6 +62,7 @@ public class IgomItems {
             cost = 1.5f;
             explosiveness = 0.25f;
             flammability = 0.25f;
+            description = "Used in batteries and capacitors. Volatile.";
         }};
         cobalt = new Item("item-cobalt", Color.valueOf("1782e6")) {{
             localizedName = "Cobalt";
@@ -76,16 +78,16 @@ public class IgomItems {
             cost = 1.4f;
             radioactivity = 1.15f;
         }};
-        carbonFabric = new Item("item-carbon-fabric", Color.valueOf("7287b3")) {{
-            localizedName = "Carbon Fabric";
-            healthScaling = 0.2f;
+        metafiber = new Item("item-metafiber", Color.valueOf("21635a")) {{
+            localizedName = "Metafiber";
+            healthScaling = 1.2f;
             cost = 1.2f;
         }};
-        sulfide = new Item("item-sulfide", Color.valueOf("677953")) {{
-            localizedName = "Sulfide";
+        hydride = new Item("item-hydride", Color.valueOf("677953")) {{
+            localizedName = "Hydride";
             healthScaling = 0f;
             cost = 1.6f;
-            description = "Used as catalyst for material synthesis and in advanced power structures.";
+            description = "Used for radiation shielding and in advanced power structures.";
         }};
         nitride = new Item("item-nitride", Color.valueOf("df7826")) {{
             localizedName = "Nitride";

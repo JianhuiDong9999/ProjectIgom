@@ -25,8 +25,8 @@ public class IgomEffectBlocks {
         mendActuator = new CircleRegenProjector("mend-actuator") {{
             localizedName = "Mend Actuator";
             squareSprite = false;
-            requirements(Category.effect, with(IgomItems.nickel, 160, Items.silicon, 80, IgomItems.lithium, 40));
-            buildCostMultiplier = 4f;
+            requirements(Category.effect, with(IgomItems.nickel, 160, Items.silicon, 80, IgomItems.lithium, 60));
+            buildCostMultiplier = 2f;
             drawTeamOverlay = false;
             consumeLiquid(Liquids.hydrogen, 0.05f);
             consumeItem(Items.silicon);
@@ -38,7 +38,7 @@ public class IgomEffectBlocks {
             health = 1220;
             armor = 2f;
 
-            healPercent = 100f / 45f / 60f;
+            healPercent = 100f / 60f / 60f;
 
             Color col = Color.valueOf("8ca9e8");
 
@@ -47,6 +47,12 @@ public class IgomEffectBlocks {
             }}, new DrawPulseShape(false){{
                 layer = Layer.effect;
                 color = col;
+            }}, new DrawShape(){{
+                layer = Layer.effect;
+                radius = 3.5f;
+                useWarmupRadius = true;
+                timeScl = 2f;
+                color = Color.valueOf("bbd0fe");
             }});
         }};
     }

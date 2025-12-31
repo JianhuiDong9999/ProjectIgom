@@ -13,7 +13,7 @@ public class TeamGenericCrafter extends GenericCrafter {
     @Override
     public void load(){
         super.load();
-        teamRegion = Core.atlas.find(name + "-team");
+        //teamRegion = Core.atlas.find(name + "-team");
     }
     public class TeamGenericCrafterBuild extends GenericCrafterBuild {
         public TeamGenericCrafterBuild() {
@@ -24,6 +24,7 @@ public class TeamGenericCrafter extends GenericCrafter {
             super.draw();
             drawTeamTop();
         }
+
 
     }
 }

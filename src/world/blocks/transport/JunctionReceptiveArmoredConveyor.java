@@ -1,4 +1,4 @@
-package world.blocks.distribution;
+package world.blocks.transport;
 
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
