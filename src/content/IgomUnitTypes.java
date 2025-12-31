@@ -138,6 +138,7 @@ public class IgomUnitTypes {
             rotateSpeed = 2.4f;
             health = 420;
             armor = 2f;
+            range = 128f;
             weapons.add(new Weapon("project-igom-neutrino-blaster"){{
                 top = false;
                 mirror = false;
@@ -156,15 +157,14 @@ public class IgomUnitTypes {
                 shoot.firstShotDelay = 6f;
                 bullet = new BasicBulletType(5.6f, 22){{
                     frontColor = Color.valueOf("ffffff");
-                    backColor = Color.valueOf("657de2");
+                    backColor = trailColor = Color.valueOf("afcdff");
                     width = 8f;
                     height = 12f;
                     lifetime = 16f;
                     shootEffect = Fx.shootSmallSmoke;
                     hitEffect = Fx.hitBulletSmall;
-                    trailColor = Color.valueOf("657de2");
                     trailLength = 3;
-                    trailWidth = 1.5f;
+                    trailWidth = 1.8f;
                 }};
             }},
                     new Weapon("project-igom-neutrino-blaster"){{
@@ -185,15 +185,14 @@ public class IgomUnitTypes {
                         shoot.shotDelay = 12f;
                         bullet = new BasicBulletType(5.6f, 22){{
                             frontColor = Color.valueOf("ffffff");
-                            backColor = Color.valueOf("657de2");
+                            backColor = trailColor = Color.valueOf("afcdff");
                             width = 8f;
                             height = 12f;
                             lifetime = 16f;
                             shootEffect = Fx.shootSmallSmoke;
                             hitEffect = Fx.hitBulletSmall;
-                            trailColor = Color.valueOf("657de2");
                             trailLength = 3;
-                            trailWidth = 1.5f;
+                            trailWidth = 1.8f;
                         }};
                     }});
         }};
