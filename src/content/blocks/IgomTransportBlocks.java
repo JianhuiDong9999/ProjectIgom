@@ -58,6 +58,7 @@ public class IgomTransportBlocks {
             displayedSpeed = 8f;
             bridgeReplacement = bracedBridge;
             junctionReplacement = bracedJunction;
+            // copyConfig = true; TODO: Get copyConfig working for bracedConveyor.
             // noSideBlend = false;
 
             description = "Moves items forward. Armored. Can be toggled to receive non-conveyor and non-junction side inputs.";
@@ -84,6 +85,7 @@ public class IgomTransportBlocks {
             speed = 8f;
             solid = false;
             regionRotated1 = 1;
+            // copyConfig = true; TODO: Get copyConfig working for bracedFlowGate.
         }};
         reinforcedDistributor = new Router("reinforced-distributor") {{
             localizedName = "Reinforced Distributor";

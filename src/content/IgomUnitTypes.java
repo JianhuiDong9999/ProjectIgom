@@ -108,7 +108,8 @@ public class IgomUnitTypes {
                 inaccuracy = 2f;
                 x = 8f;
                 ejectEffect = Fx.casing2;
-                shootSound = Sounds.shootDisperse;
+                shootSound = Sounds.shootDiffuse;
+                shootSoundVolume = 0.33f;
                 bullet = new BasicBulletType(7f, 36){{
                     frontColor = Color.valueOf("ffffff");
                     backColor = Color.valueOf("657de2");
