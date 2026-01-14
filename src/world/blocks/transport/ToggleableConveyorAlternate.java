@@ -2,12 +2,13 @@ package world.blocks.transport;
 
 import arc.Core;
 import arc.audio.Sound;
+import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
+import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -15,14 +16,15 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.Vars;
 import mindustry.content.Fx;
+import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Effect;
-import mindustry.entities.Units;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
-import mindustry.logic.LAccess;
 import mindustry.type.Item;
+import mindustry.type.Liquid;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
@@ -34,32 +36,25 @@ import static arc.graphics.g2d.Lines.stroke;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 
-public class ToggleableArmoredConveyor extends ArmoredConveyor {
+// Credit goes to Photon_Gravity for editing ToggleableArmoredConveyor to create this class.
+
+public class ToggleableConveyorAlternate extends ArmoredConveyor {
     public final int timerToggle = timers++;
     public Sound toggleSound = Sounds.door;
     public Effect toggleFx = new Effect(10, e -> {
         stroke(e.fout() * 1.6f);
         Lines.square(e.x, e.y, tilesize / 2f);
     });
-
-    TextureRegion openRegion;
     TextureRegion[][] openRegions = new TextureRegion[5][4];
 
-    public ToggleableArmoredConveyor(String name) {
+    public ToggleableConveyorAlternate(String name) {
         super(name);
         consumesTap = true;
         noSideBlend = true;
-        copyConfig = true;
-        config(Boolean.class, (ToggleableArmoredConveyor.ToggleableArmoredConveyorBuild base, Boolean open) -> {
-            toggleSound.at(base);
-            toggleFx.at(base);
-            base.open = open;
-        });
     }
     @Override
     public void load() {
         super.load();
-        openRegion = Core.atlas.find(this.name + "-open"); // Does this work?
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 4; j++) {
                 openRegions[i][j] = Core.atlas.find(this.name + "-" + i + "-" + j + "-open");
@@ -68,10 +63,16 @@ public class ToggleableArmoredConveyor extends ArmoredConveyor {
     }
     @Override
     public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
-        return (!noSideBlend ? (otherblock.outputsItems() || (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasItems))
+        return ((tile.build instanceof ToggleableArmoredConveyorBuild conv && conv.open) ? (otherblock.outputsItems() || (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasItems))
                 && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock) : (otherblock.outputsItems() && blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock)) ||
                 (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasItems));
     }
+
+    @Override
+    public int[] buildBlending(Tile tile, int rotation, BuildPlan[] directional, boolean world) {
+        return super.buildBlending(tile, rotation, directional, world);
+    }
+
     @Override
     public boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
         return Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, otherx, othery)
@@ -79,16 +80,23 @@ public class ToggleableArmoredConveyor extends ArmoredConveyor {
                 Edges.getFacingEdge(otherblock, otherx, othery, tile).relativeTo(tile) == rotation) || otherblock instanceof Junction ||
                 (otherblock instanceof Conveyor && otherblock.rotatedOutput(otherx, othery) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y)));
     }
+
     @Override
     public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
         int[] bits = getTiling(plan, list);
-
         if(bits == null) return;
 
-        TextureRegion region = regions[bits[0]][0];
-        TextureRegion openRegion = openRegions[bits[0]][0];
-        Draw.rect(plan.config == Boolean.TRUE ? openRegion : region, plan.drawx(), plan.drawy(), region.width * bits[1] * region.scl(), region.height * bits[2] * region.scl(), plan.rotation * 90);
+        boolean planOpen = plan.config != null && plan.config instanceof Boolean bool && bool;
+
+        TextureRegion region = (planOpen ? openRegions : regions)[bits[0]][0];
+        Draw.rect(region, plan.drawx(), plan.drawy(), region.width * bits[1] * region.scl(), region.height * bits[2] * region.scl(), plan.rotation * 90);
     }
+
+    @Override
+    public Object getConfig(Tile tile) {
+        return tile.build instanceof ToggleableArmoredConveyorBuild b ? b.open : null;
+    }
+
     public class ToggleableArmoredConveyorBuild extends ConveyorBuild{
         public boolean open = false;
         @Override
@@ -97,29 +105,10 @@ public class ToggleableArmoredConveyor extends ArmoredConveyor {
                 return;
             }
             configure(!open);
-            onProximityUpdate();
+            toggleSound.at(this);
+            toggleFx.at(this);
         }
-        @Override
-        public void onProximityUpdate(){
-            noSideBlend = !open;
-            super.onProximityUpdate();
-        }
-        @Override
-        public double sense(LAccess sensor){
-            if(sensor == LAccess.enabled) return open ? 1 : 0;
-            return super.sense(sensor);
-        }
-        @Override
-        public void control(LAccess type, double p1, double p2, double p3, double p4){
-            if(type == LAccess.enabled){
-                boolean shouldOpen = !Mathf.zero(p1);
-                if(Vars.net.client() || open == shouldOpen || !timer(timerToggle, 80f)){
-                    return;
-                }
 
-                configureAny(shouldOpen);
-            }
-        }
         @Override
         public boolean acceptItem(Building source, Item item){
             return (open ? super.acceptItem(source, item) : super.acceptItem(source, item) && (source.block instanceof Conveyor
@@ -127,6 +116,7 @@ public class ToggleableArmoredConveyor extends ArmoredConveyor {
                     || !source.proximity.contains(this)
                     || source.block instanceof Junction));
         }
+
         @Override
         public void draw(){
             int frame = enabled && clogHeat <= 0.5f ? (int)(((Time.time * speed * 8f * timeScale * efficiency)) % 4) : 0;
@@ -163,10 +153,21 @@ public class ToggleableArmoredConveyor extends ArmoredConveyor {
                 Draw.rect(item.fullIcon, ix, iy, itemSize, itemSize);
             }
         }
+
         @Override
-        public Boolean config(){
+        public void configured(Unit builder, Object value) {
+            super.configured(builder, value);
+            if(value instanceof Boolean bool){
+                open = bool;
+                onProximityUpdate();
+            }
+        }
+
+        @Override
+        public Boolean config() {
             return open;
         }
+
         @Override
         public void write(Writes write){
             super.write(write);

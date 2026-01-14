@@ -9,8 +9,13 @@ import mindustry.world.blocks.liquid.ArmoredConduit;
 import mindustry.world.blocks.liquid.LiquidJunction;
 import mindustry.world.blocks.liquid.LiquidRouter;
 import mindustry.world.blocks.production.Pump;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawLiquidRegion;
+import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawPumpLiquid;
 import world.blocks.liquid.ClearLiquidBridge;
 import world.blocks.liquid.StatPump;
+import world.draw.DrawTeam;
 
 import static mindustry.type.ItemStack.with;
 
@@ -82,6 +87,7 @@ public class IgomLiquidBlocks {
             pumpAmount = 60f / 60f / 4f;
             consumeLiquid(Liquids.hydrogen, 2f / 60f);
             consumeItem(Items.graphite);
+            drawer = new DrawMulti(new DrawDefault(), new DrawPumpLiquid(), new DrawTeam());
         }};
     }
 }

@@ -38,7 +38,11 @@ public class ToggleableFlowGate extends Block{
         envEnabled = Env.space | Env.terrestrial | Env.underwater;
         regionRotated1 = 1;
         consumesTap = true;
-        config(Boolean.class, (ToggleableFlowGate.ToggleableFlowGateBuild base, Boolean open) -> toggleSound.at(base));
+        copyConfig = true;
+        config(Boolean.class, (ToggleableFlowGate.ToggleableFlowGateBuild base, Boolean invert) -> {
+            toggleSound.at(base);
+            base.invert = invert;
+        });
     }
 
     @Override
@@ -62,7 +66,7 @@ public class ToggleableFlowGate extends Block{
     @Override
     public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
         Draw.rect(region, plan.drawx(), plan.drawy());
-        Draw.rect(topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(plan.config == Boolean.TRUE ? topRegionInverted : topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
     }
 
     @Override
@@ -72,7 +76,7 @@ public class ToggleableFlowGate extends Block{
 
     public class ToggleableFlowGateBuild extends Building{
         public float progress;
-        public boolean invert;
+        public boolean invert = false;
 
         public @Nullable Item current;
 
@@ -111,7 +115,6 @@ public class ToggleableFlowGate extends Block{
                 return;
             }
             configure(!invert);
-            invert = !invert;
         }
 
         @Nullable
@@ -176,6 +179,10 @@ public class ToggleableFlowGate extends Block{
             progress = -1f;
             items.add(item, 1);
             noSleep();
+        }
+        @Override
+        public Boolean config(){
+            return invert;
         }
         @Override
         public void write(Writes write){

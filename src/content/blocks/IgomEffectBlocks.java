@@ -26,7 +26,7 @@ public class IgomEffectBlocks {
             localizedName = "Mend Actuator";
             squareSprite = false;
             requirements(Category.effect, with(IgomItems.nickel, 160, Items.silicon, 80, IgomItems.lithium, 60));
-            buildCostMultiplier = 2f;
+            buildCostMultiplier = 1.25f;
             drawTeamOverlay = false;
             consumeLiquid(Liquids.hydrogen, 0.05f);
             consumeItem(Items.silicon);

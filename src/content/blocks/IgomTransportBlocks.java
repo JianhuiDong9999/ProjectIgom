@@ -7,6 +7,7 @@ import mindustry.world.Block;
 import mindustry.world.blocks.distribution.*;
 import world.blocks.transport.JunctionReceptiveArmoredConveyor;
 import world.blocks.transport.ToggleableArmoredConveyor;
+import world.blocks.transport.ToggleableConveyorAlternate;
 import world.blocks.transport.ToggleableFlowGate;
 
 import static mindustry.type.ItemStack.with;
@@ -45,12 +46,12 @@ public class IgomTransportBlocks {
 
             description = "Allows the intersection of conveyors. Armored.";
         }};
-        bracedConveyor = new ToggleableArmoredConveyor("braced-conveyor") {{
+        bracedConveyor = new ToggleableConveyorAlternate("braced-conveyor") {{
             // TODO: Implement ToggleableConveyor with functioning teamRegion.
             localizedName = "Braced Conveyor";
             requirements(Category.distribution, with(IgomItems.nickel, 2));
             buildCostMultiplier = 5f;
-            drawTeamOverlay = false;
+            drawTeamOverlay = true; // TODO: Implement conveyor team region
             health = 180;
             armor = 3f;
             speed = 0.0575f;
@@ -76,7 +77,7 @@ public class IgomTransportBlocks {
             // TODO: Implement ToggleableOverflowGate.
             localizedName = "Braced Flow Gate";
             buildCostMultiplier = 4f;
-            drawTeamOverlay = false;
+            drawTeamOverlay = true;
             requirements(Category.distribution, with(Items.graphite, 12, IgomItems.nickel, 8));
             health = 320;
             armor = 3f;

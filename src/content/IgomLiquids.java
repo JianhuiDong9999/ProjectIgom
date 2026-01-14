@@ -6,7 +6,7 @@ import mindustry.content.StatusEffects;
 import mindustry.type.CellLiquid;
 import mindustry.type.Liquid;
 public class IgomLiquids {
-    public static Liquid methane, acid, oxygen, helium, liquidnitrogen, argon, corium;
+    public static Liquid methane, acid, oxygen, helium, sand, liquidnitrogen, argon, corium;
     public static void load() {
         methane = new Liquid("liquid-methane", Color.valueOf("7db5a388")){{
             localizedName = "Methane";
@@ -52,6 +52,12 @@ public class IgomLiquids {
             gas = true;
             description = "Used in cryogenics and in alloying processes. Chemically inert.";
             barColor = Color.valueOf("ccffff");
+        }};
+        sand = new Liquid("liquid-sand", Color.valueOf("f7cba4")) {{
+            localizedName = "Liquid Sand";
+            heatCapacity = 0.6f;
+            viscosity = 0.9f;
+            hidden = true;
         }};
         liquidnitrogen = new Liquid("liquid-liquefied-nitrogen", Color.valueOf("e4d7f4")) {{
             localizedName = "Liquid Nitrogen";

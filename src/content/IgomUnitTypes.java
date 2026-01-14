@@ -23,6 +23,7 @@ import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.weapons.PointDefenseWeapon;
+import mindustry.world.meta.BlockFlag;
 
 import static arc.graphics.g2d.Draw.color;
 import static arc.math.Angles.randLenVectors;
@@ -68,7 +69,7 @@ public class IgomUnitTypes {
                 top = false;
                 reload = 36f;
                 alternate = true;
-                x = 6f;
+                x = 6.4f;
                 y = 0f;
                 recoil = 1.5f;
                 recoilPow = 1f;
@@ -80,10 +81,10 @@ public class IgomUnitTypes {
                 bullet = new BasicBulletType(5f, 42){{
                     frontColor = Color.valueOf("ffffff");
                     backColor = Color.valueOf("657de2");
-                    width = 12f;
-                    height = 16f;
+                    width = 8f;
+                    height = 12f;
                     lifetime = 40f;
-                    hitEffect = Fx.hitBulletBig;
+                    hitEffect = Fx.hitBulletSmall;
                     knockback = 1.5f;
                 }};
             }});
@@ -107,19 +108,19 @@ public class IgomUnitTypes {
                 inaccuracy = 2f;
                 x = 8f;
                 ejectEffect = Fx.casing2;
-                shootSound = Sounds.shootDiffuse;
+                shootSound = Sounds.shootDisperse;
                 bullet = new BasicBulletType(7f, 36){{
                     frontColor = Color.valueOf("ffffff");
                     backColor = Color.valueOf("657de2");
-                    width = 16f;
-                    height = 16f;
+                    width = 12f;
+                    height = 12f;
                     lifetime = 24f;
                     knockback = 1.2f;
                     shootEffect = Fx.shootBigSmoke;
-                    hitEffect = Fx.hitBulletBig;
+                    hitEffect = Fx.hitBulletSmall;
                     trailColor = Color.valueOf("657de2");
                     trailLength = 2;
-                    trailWidth = 3f;
+                    trailWidth = 2.4f;
                 }};
             }});
         }};
@@ -129,72 +130,74 @@ public class IgomUnitTypes {
             outlineColor = Color.valueOf("3a4752");
 
             flying = true;
-            speed = 2.4f;
+            lowAltitude = false;
+            speed = 2.25f;
             accel = 0.05f;
             drag = 0.04f;
-            hitSize = 14f;
+            hitSize = 12f;
             engineSize = 3f;
             engineOffset = 4f;
-            rotateSpeed = 2.4f;
+            moveSound = Sounds.loopThruster;
+            moveSoundPitchMin = 0.8f;
+            moveSoundPitchMax = 2f;
+            moveSoundVolume = 0.05f;
+            rotateSpeed = 3.8f;
             health = 620;
             armor = 2f;
-            range = 128f;
+            targetFlags = new BlockFlag[]{BlockFlag.drill, BlockFlag.factory, null};
+            itemCapacity = 15;
+            range = tilesize * 24f;
+            circleTarget = true;
+            circleTargetRadius = tilesize * 12f;
+            final BulletType neutrinoBullet = new BasicBulletType(5.6f, 36){{
+                frontColor = Color.valueOf("ffffff");
+                backColor = trailColor = Color.valueOf("afcdff");
+                width = 8f;
+                height = 12f;
+                lifetime = 28f;
+                shootEffect = Fx.shootSmallSmoke;
+                hitEffect = Fx.hitBulletSmall;
+                trailLength = 3;
+                trailWidth = 1.8f;
+            }};
+
             weapons.add(new Weapon("project-igom-neutrino-blaster"){{
-                top = false;
+                layerOffset = -0.01f;
                 mirror = false;
                 alternate = false;
+                minShootVelocity = 2f;
                 reload = 150f;
                 recoil = 1f;
                 recoilPow = 1f;
+                rotate = false;
                 inaccuracy = 10f;
                 x = 4f;
                 ejectEffect = Fx.casing1;
-                circleTarget = true;
-                circleTargetRadius = 120f;
+                shootCone = 30f;
                 shootSound = Sounds.shootElude;
                 shoot.shots = 4;
                 shoot.shotDelay = 12f;
                 shoot.firstShotDelay = 6f;
-                bullet = new BasicBulletType(5.6f, 32){{
-                    frontColor = Color.valueOf("ffffff");
-                    backColor = trailColor = Color.valueOf("afcdff");
-                    width = 8f;
-                    height = 12f;
-                    lifetime = 16f;
-                    shootEffect = Fx.shootSmallSmoke;
-                    hitEffect = Fx.hitBulletSmall;
-                    trailLength = 3;
-                    trailWidth = 1.8f;
-                }};
-            }},
-                    new Weapon("project-igom-neutrino-blaster"){{
-                        top = false;
-                        mirror = false;
-                        flipSprite = true;
-                        alternate = false;
-                        reload = 150f;
-                        recoil = 1f;
-                        recoilPow = 1f;
-                        inaccuracy = 10f;
-                        x = -4f;
-                        ejectEffect = Fx.casing1;
-                        circleTarget = true;
-                        circleTargetRadius = 120f;
-                        shootSound = Sounds.shootElude;
-                        shoot.shots = 4;
-                        shoot.shotDelay = 12f;
-                        bullet = new BasicBulletType(5.6f, 32){{
-                            frontColor = Color.valueOf("ffffff");
-                            backColor = trailColor = Color.valueOf("afcdff");
-                            width = 8f;
-                            height = 12f;
-                            lifetime = 16f;
-                            shootEffect = Fx.shootSmallSmoke;
-                            hitEffect = Fx.hitBulletSmall;
-                            trailLength = 3;
-                            trailWidth = 1.8f;
-                        }};
-                    }});
+                bullet = neutrinoBullet;
+            }}, new Weapon("project-igom-neutrino-blaster"){{
+                layerOffset = -0.01f;
+                mirror = false;
+                flipSprite = true;
+                alternate = false;
+                minShootVelocity = 2f;
+                reload = 150f;
+                recoil = 1f;
+                recoilPow = 1f;
+                rotate = false;
+                inaccuracy = 10f;
+                x = -4f;
+                ejectEffect = Fx.casing1;
+                shootCone = 30f;
+                shootSound = Sounds.shootElude;
+                shoot.shots = 4;
+                shoot.shotDelay = 12f;
+                bullet = neutrinoBullet;
+            }});
         }};
         EntityMapping.nameMap.put("project-igom-detect", PayloadUnit::create);
         detect = new UnitType("detect") {{
@@ -253,7 +256,7 @@ public class IgomUnitTypes {
                             shootEffect = Fx.sparkShoot;
                             hitEffect = Fx.pointHit;
                             maxRange = 80f;
-                            damage = 50f;
+                            damage = 48f;
                         }};
                     }},
                     new Weapon() {{
@@ -282,12 +285,14 @@ public class IgomUnitTypes {
                             splashDamageRadius = 48f;
                             splashDamage = 64f;
                             splashDamagePierce = false;
+                            buildingDamageMultiplier = 0.01f;
                             healAmount = 40f;
                             healPercent = 2.5f;
                             healColor = Color.valueOf("99e2ff");
                             hitEffect = despawnEffect = new WrapEffect(Fx.dynamicSpikes, Color.valueOf("99e2ff"), 32f);
                             hitShake = 2f;
                             hitSound = Sounds.explosionPlasmaSmall;
+                            hitSoundVolume = 0.5f;
                             shootEffect = Fx.none;
                             smokeEffect = Fx.none;
                         }};

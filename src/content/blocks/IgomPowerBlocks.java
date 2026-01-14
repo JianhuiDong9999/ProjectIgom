@@ -3,6 +3,7 @@ package content.blocks;
 import arc.graphics.Color;
 import arc.graphics.g2d.Fill;
 import content.IgomItems;
+import content.IgomLiquids;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
@@ -12,12 +13,11 @@ import mindustry.graphics.Layer;
 import mindustry.type.Category;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.power.Battery;
-import mindustry.world.blocks.power.PowerNode;
-import mindustry.world.blocks.power.ThermalGenerator;
+import mindustry.world.blocks.power.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BlockGroup;
+import world.draw.DrawTeam;
 
 import static arc.graphics.g2d.Draw.alpha;
 import static arc.graphics.g2d.Draw.color;
@@ -30,7 +30,7 @@ public class IgomPowerBlocks {
     // power parts
     pylon, connectorNode, nickelBattery, sulfurBattery, reinforcedDiode,
     // power generators
-    insulatedThermalGenerator, insulatedTurbineCondenser, magneticGenerator, lithiumFuelCell, solarBattery, bioreactor, reinforcedRTGGenerator,
+    insulatedThermalGenerator, insulatedTurbineCondenser, lithiumFuelReactor, solarBattery, bioreactor, reinforcedRTGGenerator,
             thermoradiationGenerator, reinforcedThoriumReactor, hydrogenFusionReactor, heliumFusionReactor, quantumElectricGenerator,
             annihilationReactor;
 
@@ -51,6 +51,7 @@ public class IgomPowerBlocks {
             emptyLightColor = Color.valueOf("e6e0da");
             fullLightColor = Color.valueOf("ff8266");
             baseExplosiveness = 0.5f;
+            explosivenessScale = 0.5f;
         }};
         pylon = new PowerNode("pylon") {{
             localizedName = "Pylon";
@@ -60,7 +61,7 @@ public class IgomPowerBlocks {
             drawTeamOverlay = false;
             health = 850;
             armor = 5;
-            requirements(Category.power, with(IgomItems.nickel, 30, Items.graphite, 30, Items.silicon, 15));
+            requirements(Category.power, with(IgomItems.nickel, 30, Items.graphite, 30, IgomItems.lithium, 15));
             laserColor1 = Color.valueOf("ffffff");
             laserColor2 = Color.valueOf("ffdfbf");
             laserScale = 0.5f;
@@ -88,7 +89,7 @@ public class IgomPowerBlocks {
             localizedName = "Insulated Turbine Condenser";
             description = "Generates power when placed on vents, condenses and collects a small amount of water.";
             details = "Technology originally designed for power generation on hot, volcanic planets such as Erekir. Modifications allow this iteration to generate substantial power from Igom's cryo-volcanic system.";
-            buildCostMultiplier = 1.5f;
+            buildCostMultiplier = 1.2f;
             drawTeamOverlay = false;
             health = 1250;
             armor = 4;
@@ -114,7 +115,9 @@ public class IgomPowerBlocks {
             size = 3;
             ambientSound = Sounds.loopHum;
             ambientSoundVolume = 0.06f;
-            drawer = new DrawMulti(new DrawDefault(), new DrawBlurSpin("-rotator", 0.6f * 9f){{
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(){{
+                padding = 1f;
+            }}, new DrawDefault(), new DrawTeam(), new DrawBlurSpin("-rotator", 0.6f * 9f){{
                 blurThresh = 0.01f;
             }});
             hasLiquids = true;
@@ -125,14 +128,14 @@ public class IgomPowerBlocks {
 
         insulatedThermalGenerator = new ThermalGenerator("insulated-thermal-generator") {{
             localizedName = "Insulated Thermal Generator";
-            buildCostMultiplier = 1.5f;
+            buildCostMultiplier = 1.2f;
             drawTeamOverlay = false;
             squareSprite = false;
             requirements(Category.power, with(Items.graphite, 80, IgomItems.nickel, 60, Items.silicon, 100));
             health = 455;
             size = 2;
             armor = 2f;
-            powerProduction = 1.5f;
+            powerProduction = 90f / 60f;
             /*
             hasLiquids = true;
             consumeLiquid(IgomLiquids.methane, 0.05f).boost();
@@ -146,6 +149,36 @@ public class IgomPowerBlocks {
                 glowIntensity = 0.5f;
                 color = Color.valueOf("b54b00");
             }});
+        }};
+        lithiumFuelReactor = new ConsumeGenerator("lithium-fuel-reactor") {{
+            localizedName = "Lithium Fuel Reactor";
+            buildCostMultiplier = 1f;
+            drawTeamOverlay = false;
+            health = 3220;
+            armor = 8f;
+            size = 3;
+            squareSprite = false;
+            requirements(Category.power, with(IgomItems.nickel, 220, IgomItems.metafiber, 80, Items.silicon, 280, IgomItems.lithium, 320));
+            consumeItems(with(IgomItems.lithium, 1, Items.graphite, 1));
+            consumeLiquid(IgomLiquids.oxygen, 5f / 60f);
+            itemCapacity = 60;
+            liquidCapacity = 120f;
+            powerProduction = 1120f / 60f;
+            itemDuration = 4f * 60f;
+            ambientSound = Sounds.loopDifferential;
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile() {{
+                padding = 1f;
+            }}, new DrawDefault(), new DrawGlowRegion("-glow2") {{
+                alpha = 1f;
+                glowScale = 7.5f;
+                glowIntensity = 0.1f;
+                color = Color.valueOf("b94167");
+            }}, new DrawGlowRegion() {{
+                alpha = 1f;
+                glowScale = 7.5f;
+                glowIntensity = 0.5f;
+                color = Color.valueOf("b77197");
+            }}, new DrawTeam());
         }};
     }
 }

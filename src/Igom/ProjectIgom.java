@@ -40,13 +40,13 @@ public class ProjectIgom extends Mod {
     @Override
     public void loadContent() {
         Log.info("Loading ProjectIgom");
+        IgomTeams.load();
         IgomStatusEffects.load();
         IgomItems.load();
         IgomLiquids.load();
         IgomShaders.init();
         IgomCacheLayer.load();
         IgomUnitTypes.load();
-        IgomTeams.load();
         IgomAttribute.load();
         //All Blocks TODO: Ensure correct block loading order.
         IgomEnvironmentBlocks.load();

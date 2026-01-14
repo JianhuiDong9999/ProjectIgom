@@ -5,6 +5,7 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
+import arc.struct.EnumSet;
 import content.IgomItems;
 import content.IgomLiquids;
 import content.IgomStatusEffects;
@@ -18,6 +19,8 @@ import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.entities.bullet.*;
 import mindustry.entities.part.FlarePart;
 import mindustry.entities.part.RegionPart;
+import mindustry.entities.pattern.ShootBarrel;
+import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -33,8 +36,10 @@ import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawHeatRegion;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawTurret;
+import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 import world.blocks.crafters.TeamItemTurret;
+import world.blocks.turrets.ItemLiquidTurret;
 import world.blocks.turrets.MultiItemTurret;
 
 import static arc.graphics.g2d.Draw.alpha;
@@ -47,7 +52,7 @@ import static mindustry.content.Fx.v;
 import static mindustry.type.ItemStack.with;
 
 public class IgomTurretBlocks {
-    public static Block pelt, batter, erode, pummel, seethe, dismantle, punish, obfuscate, extricate, blight;
+    public static Block pelt, batter, quench, erode, pummel, seethe, dismantle, punish, obfuscate, extricate, blight;
 
     public static void load(){
         //Registers build IgomTurretBlocks
@@ -56,13 +61,13 @@ public class IgomTurretBlocks {
             localizedName = "Pelt";
             description = "Fires volleys of bullets at enemy targets.";
             requirements(Category.turret, with(IgomItems.nickel, 120, Items.graphite, 120, Items.silicon, 80));
-            buildCostMultiplier = 2f;
+            buildCostMultiplier = 1.2f;
             size = 3;
+            squareSprite = false;
             outlineColor = Color.valueOf("3a4752");
             recoil = 1f;
             shoot.shots = 3;
             shoot.shotDelay = 6f;
-            squareSprite = false;
             itemCapacity = 30;
             shootY = 12f;
             reload = 80f;
@@ -75,7 +80,7 @@ public class IgomTurretBlocks {
             coolant = consumeCoolant(0.05f);
             coolantMultiplier = 24f;
             limitRange(2.0F);
-            ammo(IgomItems.nickel, new BasicBulletType(4.8f, 48){{
+            ammo(IgomItems.nickel, new BasicBulletType(4.8f, 52){{
                 width = 8f;
                 height = 16f;
                 lifetime = 48f;
@@ -93,7 +98,7 @@ public class IgomTurretBlocks {
                 lifetime = 64f;
                 knockback = 0.8f;
                 rangeChange = 96f;
-                reloadMultiplier = 0.75f;
+                reloadMultiplier = 1.5f;
                 ammoMultiplier = 3f;
                 hitColor = backColor = trailColor = Color.valueOf("669995");
                 frontColor = Color.white;
@@ -124,8 +129,8 @@ public class IgomTurretBlocks {
         }};
         batter = new ItemTurret("batter"){{
             localizedName = "Batter";
-            requirements(Category.turret, with(IgomItems.lithium, 120, Items.graphite, 220, Items.silicon, 180));
-            buildCostMultiplier = 2f;
+            requirements(Category.turret, with(IgomItems.lithium, 160, Items.graphite, 320, Items.silicon, 240));
+            buildCostMultiplier = 1.75f;
 
             predictTarget = false;
             ammo(
@@ -154,7 +159,7 @@ public class IgomTurretBlocks {
                             engineLayer = Layer.effect;
                             engineSize = 1.5f;
                             engineOffset = 6f;
-                            rotateSpeed = 0.6f;
+                            rotateSpeed = 0.8f;
                             targetInterval = 5f;
                             trailLength = 6;
                             missileAccelTime = 120f;
@@ -187,7 +192,7 @@ public class IgomTurretBlocks {
                                 deathExplosionEffect = Fx.titanExplosion;
                                 shootOnDeath = true;
                                 shake = 5f;
-                                bullet = new ExplosionBulletType(120f, 49f){{
+                                bullet = new ExplosionBulletType(328f, 49f){{
                                     hitColor = Pal.redLight;
                                     shootEffect = new Effect(30, e -> {
                                         color(Pal.redLight);
@@ -226,18 +231,18 @@ public class IgomTurretBlocks {
                                         hitEffect = Fx.hitLaser;
                                         knockback = 4.5f;
                                         lifetime = 30f;
-                                        width = 30f;
+                                        width = 16f;
                                         length = 60f;
                                         serrationWidth = 5f;
                                         serrations = 5;
                                         serrationFadeOffset = 0.2f;
                                         collidesTiles = false;
-                                        damage = 164f;
+                                        damage = 104f;
                                         fromColor = Color.white;
                                         toColor = Pal.redLight;
                                         smokeEffect = Fx.shootBigSmoke;
                                         status = IgomStatusEffects.breached;
-                                        statusDuration = 3 * 60f;
+                                        statusDuration = 5 * 60f;
                                         shake = 5f;
                                         lightRadius = 30f;
                                         lightColor = Pal.redLight;
@@ -252,7 +257,7 @@ public class IgomTurretBlocks {
 
                                     color(b.color, 0.7f);
                                     for(int i = 0; i < 2; i++){
-                                        rand.setSeed(b.id*2 + i);
+                                        rand.setSeed(b.id* 2L + i);
                                         float lenScl = rand.random(0.5f, 1f);
                                         int fi = i;
                                         b.scaled(b.lifetime * lenScl, e -> {
@@ -297,9 +302,9 @@ public class IgomTurretBlocks {
 
             coolantMultiplier = 8f;
             shootSound = Sounds.shootMissileLarge;
-            consumeLiquid(IgomLiquids.oxygen, 3f / 60f);
-            consumeLiquid(IgomLiquids.methane, 6f / 60f);
-            coolant = consume(new ConsumeLiquid(IgomLiquids.liquidnitrogen, 6f / 60f));
+            consumeLiquid(IgomLiquids.oxygen, 8f / 60f);
+            consumeLiquid(IgomLiquids.methane, 12f / 60f);
+            coolant = consume(new ConsumeLiquid(IgomLiquids.liquidnitrogen, 12f / 60f));
             liquidCapacity = 20f;
 
             minWarmup = 0.94f;
@@ -310,19 +315,61 @@ public class IgomTurretBlocks {
             targetUnderBlocks = false;
 
             shake = 3f;
-            ammoPerShot = 6;
-            maxAmmo = 12;
+            ammoPerShot = 10;
+            maxAmmo = 20;
             shootY = 0;
             outlineColor = Color.valueOf("3a4752");
             size = 3;
+            squareSprite = false;
             envEnabled |= Env.space;
-            reload = 360f;
+            reload = 3.5f * 60f;
             range = 384;
             shootCone = 60f;
             health = 2420;
             rotateSpeed = 0.6f;
 
             limitRange();
+        }};
+        quench = new ItemLiquidTurret("quench"){{
+            localizedName = "Quench";
+            description = "Extinguishes fires with sand. Deals knockback to enemy units but no damage.";
+            requirements(Category.turret, with(Items.graphite, 90, IgomItems.nickel, 20, Items.silicon, 40));
+            buildCostMultiplier = 1.5f;
+            hasLiquids = true;
+            ammo(
+                    Items.sand, new LiquidBulletType(IgomLiquids.sand){{
+                        orbSize = 1.5f;
+                        knockback = 0.5f;
+                        speed = 5.5f;
+                        drag = 0.04f;
+                        layer = Layer.bullet - 2f;
+                        ammoMultiplier = 12;
+                    }}
+            );
+            size = 2;
+            squareSprite = false;
+            recoil = 1f;
+            reload = 3f;
+            maxAmmo = 60;
+            shootCone = 60f;
+            inaccuracy = 4f;
+            shoot = new ShootBarrel(){{
+                barrels = new float[]{
+                        -3f, -1.5f, 0f,
+                        -1f, -1f, 0f,
+                        1f, -1f, 0f,
+                        3f, -1.5f, 0f
+                };
+                shots = 4;
+                shotDelay = 0f;
+            }};
+            loopSound = Sounds.loopSpray;
+            shootSound = Sounds.none;
+            shootEffect = Fx.shootLiquid;
+            range = 110f;
+            health = 450;
+            armor = 2f;
+            flags = EnumSet.of(BlockFlag.turret, BlockFlag.extinguisher);
         }};
     }
 }

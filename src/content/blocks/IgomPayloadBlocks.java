@@ -28,6 +28,7 @@ public class IgomPayloadBlocks {
         walkerConstructor = new TeamUnitFactory("walker-constructor"){{
             localizedName = "Walker Constructor";
             requirements(Category.units, with(IgomItems.nickel, 320, Items.silicon, 240, Items.graphite, 240));
+            buildCostMultiplier = 1.1f;
             size = 3;
             health = 2840;
             armor = 6f;

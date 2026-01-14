@@ -83,9 +83,9 @@ public class IgomExtractionBlocks {
             size = 3;
             health = 825;
             armor = 2;
-            liquidCapacity = 600f;
+            liquidCapacity = 240f;
             itemCapacity = 30;
-            consumeLiquid(IgomLiquids.methane, 0.1f);
+            consumePower(160f / 60f);
             consumeItem(Items.graphite);
             itemUseTime = 300f;
             drawer = new DrawMulti(new DrawLiquidRegion(), new DrawDefault());
@@ -93,9 +93,8 @@ public class IgomExtractionBlocks {
             rotateSpeed = 0.8f;
             envRequired |= 64;
             baseEfficiency = 0.5f;
-            consumesPower = false;
 
-            description = "Fracks underground water ice reservoirs with liquid methane. " +
+            description = "Extracts water from underground ice reservoirs. " +
                     "Requires graphite as filter material.";
         }};
         crystalCollector = new AttributeCollector("crystal-collector") {{

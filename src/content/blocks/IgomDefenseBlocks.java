@@ -17,7 +17,7 @@ public class IgomDefenseBlocks {
         nickelWallSmall = new Wall("nickel-wall-small") {{
             localizedName = "Mini Nickel Wall";
             drawTeamOverlay = false;
-            buildCostMultiplier = 5f;
+            buildCostMultiplier = 3f;
             requirements(Category.defense, with(IgomItems.nickel, 10));
             size = 1;
             health = 800;
@@ -27,7 +27,7 @@ public class IgomDefenseBlocks {
         nickelWall = new Wall("nickel-wall") {{
             localizedName = "Nickel Wall";
             drawTeamOverlay = false;
-            buildCostMultiplier = 5f;
+            buildCostMultiplier = 3f;
             requirements(Category.defense, with(IgomItems.nickel, 30));
             size = 2;
             health = 2380;
@@ -37,7 +37,7 @@ public class IgomDefenseBlocks {
         metafiberWallSmall = new Wall("metafiber-wall-small") {{
             localizedName = "Mini Metafiber Wall";
             drawTeamOverlay = false;
-            buildCostMultiplier = 5f;
+            buildCostMultiplier = 3f;
             requirements(Category.defense, with(IgomItems.nickel, 4, IgomItems.metafiber, 10));
             size = 1;
             health = 1200;
@@ -48,7 +48,7 @@ public class IgomDefenseBlocks {
         metaFiberwall = new Wall("metafiber-wall") {{
             localizedName = "Metafiber Wall";
             drawTeamOverlay = false;
-            buildCostMultiplier = 5f;
+            buildCostMultiplier = 3f;
             requirements(Category.defense, with(IgomItems.nickel, 12, IgomItems.metafiber, 30));
             size = 2;
             health = 3520;

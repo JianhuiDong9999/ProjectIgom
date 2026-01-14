@@ -1,12 +1,15 @@
 package content.blocks;
 
 import arc.graphics.Color;
+import arc.graphics.g2d.Fill;
 import content.IgomItems;
 import content.IgomLiquids;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
+import mindustry.entities.Effect;
 import mindustry.gen.Sounds;
+import mindustry.graphics.Pal;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
@@ -21,6 +24,8 @@ import world.draw.DrawInsulatedElectrolyzerLiquidTiles;
 import world.draw.DrawRotatableBlock;
 import world.draw.DrawRotatableGlowRegion;
 
+import static arc.graphics.g2d.Draw.color;
+import static arc.math.Angles.randLenVectors;
 import static mindustry.type.ItemStack.with;
 
 public class IgomCrafterBlocks {
@@ -38,7 +43,7 @@ public class IgomCrafterBlocks {
                     localizedName = "Reinforced Arc Furnace";
                     requirements(Category.crafting, with(Items.graphite, 320, IgomItems.nickel, 180));
                     squareSprite = false;
-                    health = 6540;
+                    health = 4540;
                     armor = 4f;
                     craftEffect = Fx.none;
                     outputItem = new ItemStack(Items.silicon, 12);
@@ -70,18 +75,23 @@ public class IgomCrafterBlocks {
             insulatedElectrolyzer = new TeamGenericCrafter("insulated-electrolyzer"){{
                     localizedName = "Insulated Electrolyzer";
                     requirements(Category.crafting, with(IgomItems.nickel, 80, Items.graphite, 140, Items.silicon, 80, IgomItems.lithium, 60));
+                    squareSprite = false;
                     size = 3;
-
+                    health = 1840;
+                    armor = 2f;
                     craftTime = 10f;
                     rotate = true;
                     invertFlip = true;
                     group = BlockGroup.liquids;
                     hasLiquids = true;
-                    itemCapacity = 0;
+                    hasItems = true;
+                    itemCapacity = 30;
 
                     liquidCapacity = 40f;
 
                     consumeLiquid(Liquids.water, 12f / 60f);
+                    consumeItem(IgomItems.nickel);
+                    craftTime = 5f * 60f;
                     consumePower(3f);
                     drawer = new DrawMulti(
                             new DrawRegion("-bottom"),
@@ -113,28 +123,34 @@ public class IgomCrafterBlocks {
             metafiberWeaver = new TeamGenericCrafter("metafiber-weaver"){{
                     localizedName = "Metafiber Weaver";
                     requirements(Category.crafting, with(IgomItems.nickel, 160, Items.silicon, 320, IgomItems.lithium, 80));
-                    craftEffect = Fx.pulverizeMedium;
-                    outputItem = new ItemStack(IgomItems.metafiber, 4);
-                    craftTime = 4 * 60f;
+                    squareSprite = false;
+                    craftEffect = new Effect(30, e -> {
+                            randLenVectors(e.id, 12, 9f + e.fin() * 8f, (x, y) -> {
+                                    color(Pal.stoneGray);
+                                    Fill.square(e.x + x, e.y + y, e.fout() + 0.5f, 45);
+                            });
+                    });
+                    outputItem = new ItemStack(IgomItems.metafiber, 6);
+                    craftTime = 2 * 60f;
                     size = 3;
-                    health = 4260;
-                    armor = 12f;
+                    health = 2260;
+                    armor = 3f;
                     hasPower = true;
-                    drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(IgomLiquids.oxygen) {{
+                    drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(IgomLiquids.methane) {{
                             padTop = padBottom = padLeft = padRight = 4f;
                             alpha = 0.3f;
                     }}, new DrawGlowWeave() {{
-                            glowColor = Color.valueOf("d995b7");
+                            glowColor = Color.valueOf("35665e");
                             rotateSpeed = 1.25f;
                     }}, new DrawDefault());
                     envEnabled |= Env.space;
 
-                    ambientSound = Sounds.loopTech;
-                    ambientSoundVolume = 0.02f;
+                    ambientSound = Sounds.loopGrind;
+                    ambientSoundVolume = 0.05f;
 
-                    consumeItems(with(Items.graphite, 12, IgomItems.nickel, 2));
-                    consumeLiquid(IgomLiquids.oxygen, 10f / 60f);
-                    consumePower(780f / 60f);
+                    consumeItems(with(Items.graphite, 6, IgomItems.nickel, 2));
+                    consumeLiquid(IgomLiquids.methane, 12f / 60f);
+                    consumePower(320f / 60f);
                     itemCapacity = 40;
                     liquidCapacity = 60f;
             }};
