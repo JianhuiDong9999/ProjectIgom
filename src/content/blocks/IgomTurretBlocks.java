@@ -282,20 +282,23 @@ public class IgomTurretBlocks {
 
             drawer = new DrawMulti(new DrawTurret(){{
                 parts.add(new RegionPart("-missile"){{
-                            progress = PartProgress.reload.curve(Interp.pow2In);
-                            y = 2f;
+                    progress = PartProgress.reload.curve(Interp.pow2In);
+                    y = 2f;
 
-                            colorTo = new Color(1f, 1f, 1f, 0f);
-                            color = Color.white;
-                            mixColorTo = Pal.accent;
-                            mixColor = new Color(1f, 1f, 1f, 0f);
-                            outline = false;
-                            under = true;
+                    colorTo = new Color(1f, 1f, 1f, 0f);
+                    color = Color.white;
+                    mixColorTo = Pal.accent;
+                    mixColor = new Color(1f, 1f, 1f, 0f);
+                    outline = false;
+                    under = true;
 
-                            layerOffset = -0.01f;
+                    layerOffset = -0.01f;
 
-                            moves.add(new PartMove(PartProgress.warmup.inv(), 0f, -6f, 0f));
-                        }});
+                    moves.add(new PartMove(PartProgress.warmup.inv(), 0f, -6f, 0f));
+                }}, new RegionPart() {{
+                    drawRegion = false;
+                    heatProgress = PartProgress.recoil;
+                }});
             }});
 
             recoil = 0.5f;
@@ -317,13 +320,13 @@ public class IgomTurretBlocks {
             shake = 3f;
             ammoPerShot = 10;
             maxAmmo = 20;
-            shootY = 0;
+            shootY = 12f;
             outlineColor = Color.valueOf("3a4752");
             size = 3;
             squareSprite = false;
             envEnabled |= Env.space;
             reload = 3.5f * 60f;
-            range = 384;
+            range = 396;
             shootCone = 60f;
             health = 2420;
             rotateSpeed = 0.6f;

@@ -6,7 +6,9 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
+import entities.ReboundBulletType;
 import entities.abilities.FancyRepairFieldAbility;
+import entities.abilities.FancyShieldRegenFieldAbility;
 import entities.abilities.RiftFieldAbility;
 import entities.abilities.ShockwaveAbility;
 import mindustry.content.Fx;
@@ -26,6 +28,7 @@ import mindustry.type.weapons.PointDefenseWeapon;
 import mindustry.world.meta.BlockFlag;
 
 import static arc.graphics.g2d.Draw.color;
+import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.randLenVectors;
 import static mindustry.Vars.tilesize;
 import static mindustry.content.Fx.rand;
@@ -40,19 +43,32 @@ public class IgomUnitTypes {
             // Core Units
             detect, survey, advent,
             // Ground Armored Units
-            pike, halberd, bulwark, pavise, aegis,
-            // Fighters
-            neutrino, photon, gluon, hadron, nymph, shrike, condor, phoenix,
+            pike, halberd, awlpike, corseque,
+            // Ground Reaver Units
+            morningstar, glaive, warscythe,
+            // Ground Heavy Armor
+            vanguard, bulwark, pavise, aegis,
+            // Creeper Units
+
+            // Assault Fighters
+            neutrino, photon, hadron,
+            // Reaver Fighters
+            nymph, sylphus, pleiades, theosis,
+            shrike, condor, phoenix,
+            // Bombers
+            azimuth, penumbra,
             // Air Frigates
-            vector, azimuth, hyperplane, penumbra, umbra,
+
             // Air Cruisers
                 // Reaver Cruisers
-                    twilight, oblivion, nihility,
+                    dusk, twilight, oblivion, nihility,
                 // Surge Cruisers
                     nimbostratus, cumulonimbus, tempest,
             // Naval Cruisers
                 // Battlecruisers
-                    garfish, barracuda, cretoxyrhina;
+                    garfish, barracuda, carcharodon,
+                // Battleships
+                    colossus;
 
     public static void load() {
         EntityMapping.nameMap.put("project-igom-pike", MechUnit::create);
@@ -102,7 +118,7 @@ public class IgomUnitTypes {
             weapons.add(new Weapon("project-igom-halberd-cannon"){{
                 top = false;
                 reload = 72f;
-                shoot = new ShootSpread(6, 1.5f);
+                shoot = new ShootSpread(8, 1.5f);
                 recoil = 3f;
                 recoilPow = 2f;
                 inaccuracy = 2f;
@@ -143,6 +159,7 @@ public class IgomUnitTypes {
             moveSoundPitchMax = 2f;
             moveSoundVolume = 0.05f;
             rotateSpeed = 3.8f;
+            strafePenalty = 0.05f;
             health = 620;
             armor = 2f;
             targetFlags = new BlockFlag[]{BlockFlag.drill, BlockFlag.factory, null};
@@ -150,12 +167,13 @@ public class IgomUnitTypes {
             range = tilesize * 24f;
             circleTarget = true;
             circleTargetRadius = tilesize * 12f;
-            final BulletType neutrinoBullet = new BasicBulletType(5.6f, 36){{
+            final BulletType neutrinoBullet = new ReboundBulletType(5.6f, 36){{
                 frontColor = Color.valueOf("ffffff");
                 backColor = trailColor = Color.valueOf("afcdff");
                 width = 8f;
                 height = 12f;
                 lifetime = 28f;
+                lifetimeFactor = 0.5f;
                 shootEffect = Fx.shootSmallSmoke;
                 hitEffect = Fx.hitBulletSmall;
                 trailLength = 3;
@@ -199,6 +217,107 @@ public class IgomUnitTypes {
                 shoot.shotDelay = 12f;
                 bullet = neutrinoBullet;
             }});
+        }};
+        EntityMapping.nameMap.put("project-igom-azimuth", UnitEntity::create);
+        azimuth = new UnitType("azimuth") {{
+            localizedName = "Azimuth";
+            description = "Launches a barrage of bombs above enemy targets. Regenerates the shield of surrounding allied air units, including itself.";
+            outlineColor = Color.valueOf("3a4752");
+
+            flying = true;
+            lowAltitude = false;
+            speed = 1.95f;
+            accel = 0.041f;
+            drag = 0.04f;
+            hitSize = 22f;
+            engineSize = 3;
+            engineOffset = 9f;
+            moveSound = Sounds.loopThruster;
+            moveSoundPitchMin = 0.4f;
+            moveSoundPitchMax = 1f;
+            moveSoundVolume = 0.25f;
+            rotateSpeed = 1.6f;
+            strafePenalty = 0.035f;
+            health = 3240;
+            armor = 12f;
+            targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.generator, BlockFlag.battery, BlockFlag.unitAssembler, null};
+            itemCapacity = 60;
+            abilities.add(new FancyShieldRegenFieldAbility(20f, 240f, 90f, 90f) {{
+                affectGround = false;
+            }});
+            range = tilesize * 32f;
+            faceTarget = false;
+            autoDropBombs = true;
+            circleTarget = true;
+            circleTargetRadius = tilesize * 12f;
+            final BulletType azimuthBomb = new BombBulletType(160f, 28, "project-igom-small-bomb"){{
+                speed = 1.25f;
+                accel = 0f;
+                keepVelocity = false;
+                frontColor = Color.valueOf("ffcabe");
+                backColor = Color.valueOf("ff9680");
+                mixColorTo = Color.white;
+                width = 10f;
+                height = 10f;
+                shrinkX = shrinkY = 0.3f;
+                lifetime = 60f;
+                shootEffect = Fx.none;
+                status = StatusEffects.blasted;
+                hitEffect = new MultiEffect(new Effect(30f, 160f, e -> {
+                    color(backColor);
+                    stroke(e.fout() * 1.5f);
+                    float circleRad = 2f + e.finpow() * 30f;
+                    Lines.circle(e.x, e.y, circleRad);
+
+                    rand.setSeed(e.id);
+                    for(int i = 0; i < 12; i++){
+                        float angle = rand.random(360f);
+                        float lenRand = rand.random(0.5f, 1f);
+                        Lines.lineAngle(e.x, e.y, angle, e.foutpow() * 20f * rand.random(1f, 0.6f) + 2f, e.finpow() * 35f * lenRand + 3f);
+                    }
+                }), new Effect(45f, 200f, b -> {
+                    float intensity = 0.75f;
+
+                    color(backColor, 0.7f);
+                    for(int i = 0; i < 4; i++){
+                        rand.setSeed(b.id * 2L + i);
+                        float lenScl = rand.random(0.5f, 1f);
+                        int fi = i;
+                        b.scaled(b.lifetime * lenScl, e -> {
+                            randLenVectors(e.id + fi - 1, e.fin(Interp.pow10Out), (int)(2.9f * intensity), 18f * intensity, (x, y, in, out) -> {
+                                float fout = e.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
+                                float rad = fout * ((2.5f + intensity) * 2.35f);
+
+                                Fill.circle(e.x + x, e.y + y, rad);
+                                Drawf.light(e.x + x, e.y + y, rad * 2.5f, b.color, 0.5f);
+                            });
+                        });
+                    }
+                }));
+                hitSound = Sounds.explosion;
+                hitSoundVolume = 0.75f;
+                hitShake = 4f;
+            }};
+            weapons.add(new Weapon(){{
+                    layerOffset = -0.01f;
+                    alternate = false;
+                    bullet = azimuthBomb;
+                    minShootVelocity = 4f;
+                    shootStatus = StatusEffects.fast;
+                    shootStatusDuration = 60f;
+                    reload = 60f;
+                    ignoreRotation = true;
+                    baseRotation = -10f;
+                    rotate = false;
+                    shootCone = 360;
+                    x = 4f;
+                    y = -1f;
+                    ejectEffect = Fx.none;
+                    shootSound = Sounds.shootHorizon;
+                    shoot.shots = 6;
+                    shoot.shotDelay = 10f;
+                    maxRange = tilesize * 16;
+                }});
         }};
         EntityMapping.nameMap.put("project-igom-detect", PayloadUnit::create);
         detect = new UnitType("detect") {{
@@ -327,6 +446,12 @@ public class IgomUnitTypes {
                     new UnitEngine(-24f,-8f,6f,225f),
                     new UnitEngine(24f, -8f, 6f, 315f)});
             hitSize = 40f;
+            loopSound = Sounds.loopHover2;
+            loopSoundVolume = 1.0f;
+            moveSound = Sounds.loopThruster;
+            moveSoundPitchMin = 0.1f;
+            moveSoundPitchMax = 0.4f;
+            moveSoundVolume = 1.5f;
             parts.add(
                 new RegionPart("-plate") {{
                     mirror = true;
@@ -391,6 +516,7 @@ public class IgomUnitTypes {
                         reload = 40f;
                         shootWarmupSpeed = 0.08f;
                         minWarmup = 0.9f;
+                        activeSound = Sounds.loopMalign;
                         cooldownTime = 100f;
                         top = false;
                         layerOffset = -0.01f;

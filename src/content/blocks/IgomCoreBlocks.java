@@ -21,7 +21,7 @@ public class IgomCoreBlocks {
             localizedName = "Core: Initiate";
             squareSprite = false;
             drawTeamOverlay = false;
-            requirements(Category.effect, with(Items.graphite, 4000, Items.silicon, 4000, IgomItems.nickel, 4000));
+            requirements(Category.effect, with(Items.graphite, 2000, Items.silicon, 2400, IgomItems.nickel, 2000));
 
             isFirstTier = true;
             unitType = IgomUnitTypes.detect;

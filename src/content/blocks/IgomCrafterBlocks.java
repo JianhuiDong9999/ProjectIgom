@@ -54,7 +54,8 @@ public class IgomCrafterBlocks {
                     hasPower = true;
                     hasLiquids = false;
                     itemCapacity = 120;
-                    liquidCapacity = 60;
+                    liquidCapacity = 80;
+                    explosivenessScale = 4f;
                     drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawArcSmelt() {{
                             flameRad = 2f;
                             flameColor = Color.valueOf("f5b493");
