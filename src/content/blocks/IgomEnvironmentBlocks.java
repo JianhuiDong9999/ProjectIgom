@@ -564,7 +564,7 @@ public class IgomEnvironmentBlocks {
         nickel = new OreBlock("ore-nickel", IgomItems.nickel);
         graphite = new OreBlock("ore-graphite", Items.graphite);
         sulfur = new OreBlock("ore-sulfur", IgomItems.sulfur);
-        corundum = new OreBlock("ore-corundum", IgomItems.alumina);
+        corundum = new OreBlock("ore-corundum", IgomItems.corundum);
         chromium = new OreBlock("ore-chromium", IgomItems.chromium);
         lithium = new OreBlock("ore-lithium", IgomItems.lithium);
         thorium = new OreBlock("ore-vein-thorium", Items.thorium);

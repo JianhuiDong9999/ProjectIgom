@@ -17,9 +17,12 @@ import mindustry.entities.Effect;
 import mindustry.entities.UnitSorts;
 import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.entities.bullet.*;
+import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.part.FlarePart;
 import mindustry.entities.part.RegionPart;
+import mindustry.entities.pattern.ShootAlternate;
 import mindustry.entities.pattern.ShootBarrel;
+import mindustry.entities.pattern.ShootMulti;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
@@ -52,7 +55,7 @@ import static mindustry.content.Fx.v;
 import static mindustry.type.ItemStack.with;
 
 public class IgomTurretBlocks {
-    public static Block pelt, batter, quench, erode, pummel, seethe, dismantle, punish, obfuscate, extricate, blight;
+    public static Block pelt, batter, quench, diverge, erode, pummel, seethe, dismantle, punish, obfuscate, extricate, blight;
 
     public static void load(){
         //Registers build IgomTurretBlocks
@@ -60,7 +63,7 @@ public class IgomTurretBlocks {
         pelt = new ItemTurret("pelt") {{
             localizedName = "Pelt";
             description = "Fires volleys of bullets at enemy targets.";
-            requirements(Category.turret, with(IgomItems.nickel, 120, Items.graphite, 120, Items.silicon, 80));
+            requirements(Category.turret, with(IgomItems.nickel, 80, Items.graphite, 120, Items.silicon, 80));
             buildCostMultiplier = 1.2f;
             size = 3;
             squareSprite = false;
@@ -77,8 +80,9 @@ public class IgomTurretBlocks {
             health = 1080;
             inaccuracy = 1f;
             rotateSpeed = 4f;
-            coolant = consumeCoolant(0.05f);
+            coolant = consumeCoolant(3f / 60f);
             coolantMultiplier = 24f;
+            liquidCapacity = 60f;
             limitRange(2.0F);
             ammo(IgomItems.nickel, new BasicBulletType(4.8f, 52){{
                 width = 8f;
@@ -308,7 +312,7 @@ public class IgomTurretBlocks {
             consumeLiquid(IgomLiquids.oxygen, 8f / 60f);
             consumeLiquid(IgomLiquids.methane, 12f / 60f);
             coolant = consume(new ConsumeLiquid(IgomLiquids.liquidnitrogen, 12f / 60f));
-            liquidCapacity = 20f;
+            liquidCapacity = 120f;
 
             minWarmup = 0.94f;
             newTargetInterval = 20f;
@@ -373,6 +377,108 @@ public class IgomTurretBlocks {
             health = 450;
             armor = 2f;
             flags = EnumSet.of(BlockFlag.turret, BlockFlag.extinguisher);
+        }};
+        diverge = new ItemTurret("diverge") {{
+            localizedName = "Diverge";
+            description = "Fires sprays of flak at airborne enemies.";
+            requirements(Category.turret, with(IgomItems.nickel, 160, IgomItems.metafiber, 120, Items.silicon, 40));
+            buildCostMultiplier = 1.2f;
+            size = 3;
+            squareSprite = false;
+            outlineColor = Color.valueOf("3a4752");
+            recoil = 0.5f;
+            shoot = new ShootMulti(new ShootAlternate(8f), new ShootSpread(3, 7.5f));
+            itemCapacity = 30;
+            shootY = 10f;
+            reload = 48f;
+            range = 296f;
+            velocityRnd = 0.2f;
+            scaleLifetimeOffset = 1f / 7f;
+            shootCone = 30f;
+            ammoUseEffect = Fx.casing3;
+            shootEffect = Fx.shootSmokeSquare;
+            health = 1620;
+            inaccuracy = 1f;
+            rotateSpeed = 4.8f;
+            consumeLiquid(Liquids.hydrogen, 0.75f / 60f);
+            coolant = consume(new ConsumeLiquid(Liquids.water, 4f / 60f));
+            coolantMultiplier = 16f;
+            limitRange(2.0F);
+            targetAir = true;
+            targetGround = false;
+            recoils = 2;
+            drawer = new DrawTurret(){{
+                for(int i = 0; i < 2; i ++){
+                    int f = i;
+                    parts.add(new RegionPart("-barrel-" + (i == 0 ? "l" : "r")){{
+                        progress = PartProgress.recoil;
+                        recoilIndex = f;
+                        //under = true;
+                        moveY = -2f;
+                    }});
+                }
+            }};
+            ammo(Items.silicon, new FlakBulletType(9f, 36f){{
+                splashDamage = 25f;
+                splashDamageRadius = 28f;
+                collidesGround = false;
+                homingRange = 32f;
+                homingPower = 0.2f;
+                homingDelay = 18f;
+                reloadMultiplier = 1.5f;
+                width = 10f;
+                height = 10f;
+                lifetime = 64f;
+                drag = 0.02f;
+                knockback = 1.2f;
+                ammoMultiplier = 2f;
+                hitColor = backColor = trailColor = Color.valueOf("696a78");
+                frontColor = Color.white;
+                despawnEffect = hitEffect = Fx.flakExplosion;
+                trailWidth = 2f;
+                trailLength = 3;
+                smokeEffect = Fx.shootSmokeSquare;
+                shootSound = Sounds.shootCyclone;
+                shootSoundVolume = 0.2f;
+            }}, IgomItems.metafiber, new FlakBulletType(9f, 26f){{
+                splashDamage = 25f;
+                splashDamageRadius = 52f;
+                scaledSplashDamage = true;
+                collidesGround = false;
+                width = 12f;
+                height = 12f;
+                lifetime = 72f;
+                rangeChange = 60f;
+                drag = 0.015f;
+                knockback = 2.4f;
+                ammoMultiplier = 2f;
+                hitColor = backColor = trailColor = Color.valueOf("338e8c");
+                frontColor = Color.white;
+                despawnEffect = hitEffect = new MultiEffect(Fx.flakExplosion, Fx.shockwave);
+                trailWidth = 1.5f;
+                trailLength = 2;
+                smokeEffect = Fx.shootSmokeSquare;
+                shootSound = Sounds.shootDisperse;
+                shootSoundVolume = 0.3f;
+                fragOnHit = true;
+                fragOnAbsorb = false;
+                fragAngle = 45f;
+                fragSpread = 90f;
+                fragBullets = 4;
+                fragLifeMin = 0.5f;
+                fragLifeMax = 1f;
+                fragVelocityMin = 0.5f;
+                fragVelocityMax = 1f;
+                fragBullet = new BasicBulletType(2f, 18f){{
+                    width = 8f;
+                    height = 5f;
+                    collidesGround = false;
+                    lifetime = 16f;
+                    hitColor = backColor = trailColor = Color.valueOf("338e8c");
+                    frontColor = Color.white;
+                    despawnEffect = hitEffect = Fx.none;
+                }};
+            }});
         }};
     }
 }

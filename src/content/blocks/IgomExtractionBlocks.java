@@ -4,7 +4,6 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import content.IgomItems;
-import content.IgomLiquids;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
@@ -104,7 +103,7 @@ public class IgomExtractionBlocks {
             size = 2;
             health = 360;
             armor = 2f;
-            requirements(Category.production, with(IgomItems.nickel, 40, Items.graphite, 20, IgomItems.alumina, 115));
+            requirements(Category.production, with(IgomItems.nickel, 40, Items.graphite, 20, IgomItems.corundum, 115));
             attribute = IgomAttribute.quartz;
             radius = 2;
             radColor = Color.valueOf("f0a8b1");

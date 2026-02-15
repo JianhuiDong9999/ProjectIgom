@@ -58,6 +58,7 @@ public class IgomLiquids {
             heatCapacity = 0.6f;
             viscosity = 0.9f;
             hidden = true;
+            coolant = false;
         }};
         liquidnitrogen = new Liquid("liquid-liquefied-nitrogen", Color.valueOf("e4d7f4")) {{
             localizedName = "Liquid Nitrogen";

@@ -5,7 +5,7 @@ import mindustry.content.Items;
 import mindustry.type.Item;
 
 public class IgomItems {
-    public static Item nickel, sulfur, quartz, alumina, chromium, aluminum, lithium, cobalt, technetium,
+    public static Item nickel, sulfur, quartz, corundum, chromium, aluminum, lithium, cobalt, technetium,
             metafiber, hydride, polyethylene, acrylic, polymerFabric, metaPlastic, niPolymer, cermet, niChrome,
             nitride, niCobalt, entropyAlloy, quantumFabric,
     phasePanel, strongium;
@@ -37,8 +37,8 @@ public class IgomItems {
             cost = 1.2f;
             lowPriority = true;
         }};
-        alumina = new Item("item-alumina", Color.valueOf("f2968c")) {{
-            localizedName = "Alumina";
+        corundum = new Item("item-corundum", Color.valueOf("c678ac")) {{
+            localizedName = "Corundum";
             healthScaling = 0.5f;
             hardness = 4;
             cost = 1.25f;

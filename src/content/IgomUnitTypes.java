@@ -4,6 +4,7 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
+import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
 import entities.ReboundBulletType;
@@ -21,6 +22,7 @@ import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.gen.*;
 import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
@@ -31,7 +33,7 @@ import static arc.graphics.g2d.Draw.color;
 import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.randLenVectors;
 import static mindustry.Vars.tilesize;
-import static mindustry.content.Fx.rand;
+import static mindustry.content.Fx.*;
 
 public class IgomUnitTypes {
     /*public static class IgomUnitEntity extends UnitEntity {
@@ -49,7 +51,7 @@ public class IgomUnitTypes {
             // Ground Heavy Armor
             vanguard, bulwark, pavise, aegis,
             // Creeper Units
-
+            acarid, scorpio, eurypterid,
             // Assault Fighters
             neutrino, photon, hadron,
             // Reaver Fighters
@@ -63,7 +65,7 @@ public class IgomUnitTypes {
                 // Reaver Cruisers
                     dusk, twilight, oblivion, nihility,
                 // Surge Cruisers
-                    nimbostratus, cumulonimbus, tempest,
+                    virga, stratus, cumulonimbus, tempest,
             // Naval Cruisers
                 // Battlecruisers
                     garfish, barracuda, carcharodon,
@@ -71,6 +73,7 @@ public class IgomUnitTypes {
                     colossus;
 
     public static void load() {
+        // Ground
         EntityMapping.nameMap.put("project-igom-pike", MechUnit::create);
         pike = new UnitType("pike") {{
             localizedName = "Pike";
@@ -96,15 +99,31 @@ public class IgomUnitTypes {
                 ejectEffect = Fx.casing1;
                 bullet = new BasicBulletType(5f, 42){{
                     frontColor = Color.valueOf("ffffff");
-                    backColor = Color.valueOf("657de2");
+                    backColor = trailColor = Color.valueOf("657de2");
                     width = 8f;
-                    height = 12f;
+                    height = 16f;
                     lifetime = 40f;
-                    hitEffect = Fx.hitBulletSmall;
+                    trailLength = 3;
+                    trailWidth = 2f;
+                    hitEffect = despawnEffect = new Effect(14.0F, (e) -> {
+                        Draw.color(Color.white, Color.valueOf("657de2"), e.fin());
+                        e.scaled(7.0F, (s) -> {
+                            Lines.stroke(0.5F + s.fout());
+                            Lines.circle(e.x, e.y, s.fin() * 5.0F);
+                        });
+                        Lines.stroke(0.5F + e.fout());
+                        Angles.randLenVectors((long)e.id, 5, e.fin() * 15.0F, (x, y) -> {
+                            float ang = Mathf.angle(x, y);
+                            Lines.lineAngle(e.x + x, e.y + y, ang, e.fout() * 3.0F + 1.0F);
+                        });
+                        Drawf.light(e.x, e.y, 20.0F, Color.valueOf("657de2"), 0.6F * e.fout());
+                    });
                     knockback = 1.5f;
                 }};
             }});
         }};
+
+
         EntityMapping.nameMap.put("project-igom-halberd", MechUnit::create);
         halberd = new UnitType("halberd") {{
             localizedName = "Halberd";
@@ -141,6 +160,132 @@ public class IgomUnitTypes {
                 }};
             }});
         }};
+
+
+        EntityMapping.nameMap.put("project-igom-acarid", LegsUnit::create);
+        acarid = new UnitType("acarid") {{
+            localizedName = "Acarid";
+            outlineColor = Color.valueOf("3a4752");
+
+            speed = 0.96f;
+            drag = 0.11f;
+            hitSize = 12f;
+            rotateSpeed = 2.8f;
+            health = 1080;
+            armor = 2f;
+            legStraightness = 0.3f;
+            stepShake = 0f;
+            stepSound = Sounds.walkerStepTiny;
+            stepSoundVolume = 0.4f;
+
+            legCount = 4;
+            legLength = 10f;
+            lockLegBase = true;
+            legContinuousMove = true;
+            legExtension = -2.5f;
+            legBaseOffset = 3f;
+            legMaxLength = 1.1f;
+            legMinLength = 0.3f;
+            legLengthScl = 0.96f;
+            legForwardScl = 0.8f;
+            legGroupSize = 2;
+            rippleScale = 0.3f;
+
+            legMoveSpace = 1f;
+            allowLegStep = true;
+            hovering = true;
+            legPhysicsLayer = false;
+
+            shadowElevation = 0.1f;
+            groundLayer = Layer.legUnit;
+            targetAir = false;
+            weapons.add(new Weapon("project-igom-acarid-weapon") {{
+                alternate = false;
+                x = 4;
+                y = 0;
+                top = false;
+                //layerOffset = 0.01f;
+                shoot.shots = 1;
+                shoot.shotDelay = 12f;
+                shootSound = Sounds.shootCleroi;
+                shootSoundVolume = 0.2f;
+                reload = 20f;
+                bullet = new BasicBulletType(6.4f, 32) {{
+                    collidesAir = false;
+                    shootEffect = new Effect(20.0F, (e) -> {
+                        Draw.color(Color.valueOf("657de2"), e.color, e.fin());
+                        rand.setSeed((long)e.id);
+
+                        for(int i = 0; i < 4; ++i) {
+                            float rot = e.rotation + rand.range(22.0F);
+                            v.trns(rot, rand.random(e.finpow() * 21.0F));
+                            Fill.poly(e.x + v.x, e.y + v.y, 3, e.fout() * 3.0F + 0.2F, rand.random(360.0F));
+                        }
+                    });
+                    frontColor = Color.valueOf("ffffff");
+                    backColor = Color.valueOf("657de2");
+                    hitSound = Sounds.explosionCleroi;
+                    hitEffect = despawnEffect = new Effect(14.0F, (e) -> {
+                        Draw.color(Color.valueOf("657de2"), e.color, e.fin());
+                        e.scaled(7.0F, (s) -> {
+                            Lines.stroke(0.5F + s.fout());
+                            Lines.circle(e.x, e.y, s.fin() * 5.0F);
+                        });
+                        Lines.stroke(0.5F + e.fout());
+                        Angles.randLenVectors((long)e.id, 3, e.fin() * 17.0F, (x, y) -> {
+                            float ang = Mathf.angle(x, y);
+                            Fill.poly(e.x + x, e.y + y, 3, e.fout() * 4.8F, ang);
+                        });
+                        Drawf.light(e.x, e.y, 20.0F, e.color, 0.6F * e.fout());
+                    });
+                    hitSoundVolume = 0.2f;
+                    lifetime = 26f;
+                    height = 24f;
+                    width = 6f;
+                    trailColor = Color.valueOf("657de2");
+                    trailWidth = 1f;
+                    trailLength = 4;
+                    pierce = true;
+                    pierceArmor = false;
+                    pierceBuilding = true;
+                    pierceCap = 3;
+                    fragBullets = 1;
+                    fragOnHit = fragOnAbsorb = false;
+                    fragRandomSpread = 135f;
+                    fragLifeMin = fragLifeMax = 1.0f;
+                    fragVelocityMin = fragVelocityMax = 1.0f;
+                    fragBullet = new ReboundBulletType(4.8f, 24) {{
+                        collidesAir = false;
+                        frontColor = Color.valueOf("ffffff");
+                        backColor = Color.valueOf("657de2");
+                        hitSound = Sounds.explosionCleroi;
+                        hitEffect = despawnEffect = new Effect(14.0F, (e) -> {
+                            Draw.color(Color.valueOf("657de2"), e.color, e.fin());
+                            e.scaled(7.0F, (s) -> {
+                                Lines.stroke(0.5F + s.fout());
+                                Lines.circle(e.x, e.y, s.fin() * 5.0F);
+                            });
+                            Lines.stroke(0.5F + e.fout());
+                            Angles.randLenVectors((long)e.id, 3, e.fin() * 17.0F, (x, y) -> {
+                                float ang = Mathf.angle(x, y);
+                                Fill.poly(e.x + x, e.y + y, 3, e.fout() * 3.2F, ang);
+                            });
+                            Drawf.light(e.x, e.y, 20.0F, e.color, 0.6F * e.fout());
+                        });
+                        hitSoundVolume = 0.075f;
+                        height = 12f;
+                        width = 6f;
+                        lifetime = 12f;
+                        pierce = true;
+                        pierceArmor = false;
+                        pierceBuilding = true;
+                        pierceCap = 2;
+                        lifetimeFactor = 1.2f;
+                    }};
+                }};
+            }});
+        }};
+        //Air
         EntityMapping.nameMap.put("project-igom-neutrino", UnitEntity::create);
         neutrino = new UnitType("neutrino") {{
             localizedName = "Neutrino";
@@ -159,7 +304,7 @@ public class IgomUnitTypes {
             moveSoundPitchMax = 2f;
             moveSoundVolume = 0.05f;
             rotateSpeed = 3.8f;
-            strafePenalty = 0.05f;
+            strafePenalty = 0.15f;
             health = 620;
             armor = 2f;
             targetFlags = new BlockFlag[]{BlockFlag.drill, BlockFlag.factory, null};
@@ -218,6 +363,8 @@ public class IgomUnitTypes {
                 bullet = neutrinoBullet;
             }});
         }};
+
+
         EntityMapping.nameMap.put("project-igom-azimuth", UnitEntity::create);
         azimuth = new UnitType("azimuth") {{
             localizedName = "Azimuth";
@@ -237,7 +384,7 @@ public class IgomUnitTypes {
             moveSoundPitchMax = 1f;
             moveSoundVolume = 0.25f;
             rotateSpeed = 1.6f;
-            strafePenalty = 0.035f;
+            strafePenalty = 0.1f;
             health = 3240;
             armor = 12f;
             targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.generator, BlockFlag.battery, BlockFlag.unitAssembler, null};
@@ -302,7 +449,7 @@ public class IgomUnitTypes {
                     layerOffset = -0.01f;
                     alternate = false;
                     bullet = azimuthBomb;
-                    minShootVelocity = 4f;
+                    minShootVelocity = 1f;
                     shootStatus = StatusEffects.fast;
                     shootStatusDuration = 60f;
                     reload = 60f;
@@ -319,6 +466,8 @@ public class IgomUnitTypes {
                     maxRange = tilesize * 16;
                 }});
         }};
+
+
         EntityMapping.nameMap.put("project-igom-detect", PayloadUnit::create);
         detect = new UnitType("detect") {{
             outlineColor = Color.valueOf("3a4752");
@@ -406,7 +555,7 @@ public class IgomUnitTypes {
                             splashDamage = 64f;
                             splashDamagePierce = false;
                             buildingDamageMultiplier = 0.01f;
-                            healAmount = 40f;
+                            healAmount = 20f;
                             healPercent = 2.5f;
                             healColor = Color.valueOf("99e2ff");
                             hitEffect = despawnEffect = new WrapEffect(Fx.dynamicSpikes, Color.valueOf("99e2ff"), 32f);
@@ -419,6 +568,8 @@ public class IgomUnitTypes {
                     }}
             });
         }};
+
+
         EntityMapping.nameMap.put("project-igom-cumulonimbus", UnitEntity::create);
         cumulonimbus = new UnitType("cumulonimbus") {{
             description = "Fires heavy bursts of charged energy bullets which pierce and explode on impact. " +
@@ -710,6 +861,8 @@ public class IgomUnitTypes {
                         }},
                 });
         }};
+
+
         EntityMapping.nameMap.put("project-igom-oblivion", UnitEntity::create);
         oblivion = new UnitType("oblivion") {{
             outlineColor = Color.valueOf("3a4752");
