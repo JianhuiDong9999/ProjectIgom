@@ -21,7 +21,7 @@ public class IgomDefenseBlocks {
             requirements(Category.defense, with(IgomItems.nickel, 10));
             size = 1;
             health = 800;
-            armor = 6f;
+            armor = 4f;
             description = "Protects buildings from damage. Armored.";
         }};
         nickelWall = new Wall("nickel-wall") {{
@@ -31,7 +31,7 @@ public class IgomDefenseBlocks {
             requirements(Category.defense, with(IgomItems.nickel, 30));
             size = 2;
             health = 2380;
-            armor = 6f;
+            armor = 4f;
             description = "Protects buildings from damage. Armored.";
         }};
         metafiberWallSmall = new Wall("metafiber-wall-small") {{
@@ -41,7 +41,7 @@ public class IgomDefenseBlocks {
             requirements(Category.defense, with(IgomItems.nickel, 4, IgomItems.metafiber, 10));
             size = 1;
             health = 1200;
-            armor = 12f;
+            armor = 8f;
             absorbLasers = true;
             description = "Protects buildings from damage. Armored. Absorbs lasers.";
         }};
@@ -52,7 +52,7 @@ public class IgomDefenseBlocks {
             requirements(Category.defense, with(IgomItems.nickel, 12, IgomItems.metafiber, 30));
             size = 2;
             health = 3520;
-            armor = 12f;
+            armor = 8f;
             absorbLasers = true;
             description = "Protects buildings from damage. Armored. Absorbs lasers.";
         }};

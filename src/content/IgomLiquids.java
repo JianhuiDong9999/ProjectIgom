@@ -60,7 +60,7 @@ public class IgomLiquids {
             hidden = true;
             coolant = false;
         }};
-        liquidnitrogen = new Liquid("liquid-liquefied-nitrogen", Color.valueOf("e4d7f4")) {{
+        liquidnitrogen = new Liquid("liquid-liquefied-nitrogen", Color.valueOf("c1b9f8")) {{
             localizedName = "Liquid Nitrogen";
             heatCapacity = 1.2f;
             viscosity = 0.1f;
@@ -68,13 +68,13 @@ public class IgomLiquids {
             boilPoint = 0.25f;
             effect = StatusEffects.freezing;
             description = "Used as coolant for turrets and production. Chemically inert.";
-            barColor = Color.valueOf("e4d7f4");
+            barColor = Color.valueOf("c1b9f8");
         }};
         argon = new Liquid("liquid-argon", Color.valueOf("ad7cbf")) {{
             localizedName = "Argon";
             gas = true;
             description = "Used for advanced alloying and unit fabrication processes. Chemically inert.";
-            barColor = Color.valueOf("bf98cd");
+            barColor = Color.valueOf("ad7cbf");
         }};
         corium = new CellLiquid("liquid-corium", Color.valueOf("abd1bc")) {{
             localizedName = "Corium";

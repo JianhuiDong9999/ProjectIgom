@@ -30,7 +30,7 @@ import static mindustry.type.ItemStack.with;
 
 public class IgomCrafterBlocks {
     public static Block
-    reinforcedArcFurnace, metafiberWeaver, cermetKiln, sulfidationChamber, insulatedElectrolyzer, ethyleneSynthesizer, polymerPress, nichromeCrucible,
+    reinforcedArcFurnace, metafiberWeaver, cermetKiln, hydrideSynthesizer, insulatedElectrolyzer, ethyleneSynthesizer, polymerPress, nichromeCrucible,
             hydrogenRefprmer, miniCapacitorFactory, aluminumSmelter, crystalArcFurnace, lithiumKiln, nitrideSynthesizer, nickelCobaltFurnace,
             plasticAlloyWeaver, phaseKnitter, phasePlasticWeaver, vitrifier, cyanogenCatalyzer, nitrogenConcentrator, condenser,
             argonConcentrator, highEntropyAlloyFurnace, antimatterSolidifier, technetiumConverter, phaseKiln, subatomicCompressor;
@@ -76,6 +76,7 @@ public class IgomCrafterBlocks {
             insulatedElectrolyzer = new TeamGenericCrafter("insulated-electrolyzer"){{
                     localizedName = "Insulated Electrolyzer";
                     requirements(Category.crafting, with(IgomItems.nickel, 80, Items.graphite, 140, Items.silicon, 80, IgomItems.lithium, 60));
+                    drawTeamOverlay = false;
                     squareSprite = false;
                     size = 3;
                     health = 1840;
@@ -132,7 +133,7 @@ public class IgomCrafterBlocks {
                             });
                     });
                     outputItem = new ItemStack(IgomItems.metafiber, 6);
-                    craftTime = 2 * 60f;
+                    craftTime = 4 * 60f;
                     size = 3;
                     health = 2260;
                     armor = 3f;
@@ -143,13 +144,14 @@ public class IgomCrafterBlocks {
                     }}, new DrawGlowWeave() {{
                             glowColor = Color.valueOf("35665e");
                             rotateSpeed = 1.25f;
+                            lineAlpha = 0.8f;
                     }}, new DrawDefault());
                     envEnabled |= Env.space;
 
-                    ambientSound = Sounds.loopGrind;
+                    ambientSound = Sounds.loopMachine;
                     ambientSoundVolume = 0.05f;
 
-                    consumeItems(with(Items.graphite, 6, IgomItems.nickel, 2));
+                    consumeItems(with(Items.graphite, 8, IgomItems.nickel, 2));
                     consumeLiquid(IgomLiquids.methane, 12f / 60f);
                     consumePower(320f / 60f);
                     itemCapacity = 40;

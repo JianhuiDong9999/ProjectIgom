@@ -19,15 +19,17 @@ public class DrawGlowWeave extends DrawWeave {
     public Color weaveColor;
     public float pulse;
     public float pulseScl;
+    public float lineAlpha;
     public DrawGlowWeave() {
         weaveColor = Color.white.cpy();
         pulse = 0.3F;
         pulseScl = 10.0F;
+        lineAlpha = 0.5f;
     }
     public void draw(Building build) {
 
         Draw.color(this.weaveColor);
-        Draw.alpha(0.25f);
+        Draw.alpha(lineAlpha);
         Lines.lineAngleCenter(
                 build.x + Mathf.sin(build.totalProgress() / 2, 6f, Vars.tilesize / 3f * build.block.size),
                 build.y,

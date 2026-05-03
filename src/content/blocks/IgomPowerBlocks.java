@@ -44,7 +44,7 @@ public class IgomPowerBlocks {
             size = 2;
             buildCostMultiplier = 1f;
             drawTeamOverlay = false;
-            health = 200;
+            health = 420;
             armor = 2;
             requirements(Category.power, with(IgomItems.nickel, 40, Items.graphite, 80));
             consumePowerBuffered(20000f);
@@ -153,7 +153,7 @@ public class IgomPowerBlocks {
         lithiumFuelReactor = new ConsumeGenerator("lithium-fuel-reactor") {{
             localizedName = "Lithium Fuel Reactor";
             buildCostMultiplier = 1f;
-            drawTeamOverlay = false;
+            drawTeamOverlay = true;
             health = 3220;
             armor = 8f;
             size = 3;

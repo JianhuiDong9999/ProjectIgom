@@ -7,7 +7,7 @@ import mindustry.type.Item;
 public class IgomItems {
     public static Item nickel, sulfur, quartz, corundum, chromium, aluminum, lithium, cobalt, technetium,
             metafiber, hydride, polyethylene, acrylic, polymerFabric, metaPlastic, niPolymer, cermet, niChrome,
-            nitride, niCobalt, entropyAlloy, quantumFabric,
+            nitride, niCobalt, surgeCell, entropyAlloy, quantumFabric,
     phasePanel, strongium;
     // cermet is chromium + alumina
     // sulfide is nickel sulfide, used in batteries, capacitors, as a catalyst in electrolyzers
@@ -94,6 +94,14 @@ public class IgomItems {
             healthScaling = 0f;
             cost = 1.4f;
             description = "Insulator material with very high thermal conductivity. Used in advanced electronics and heat structures.";
+        }};
+        surgeCell = new Item("item-surge-cell", Color.valueOf("bfa615")) {{
+            localizedName = "Surge Cell";
+            healthScaling = 0f;
+            cost = 4f;
+            explosiveness = 0.25f;
+            charge = 1f;
+            description = "Capacitor module that stores a large amount of electric charge.";
         }};
     }
 }

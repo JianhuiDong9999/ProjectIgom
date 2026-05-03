@@ -22,7 +22,7 @@ public class IgomEnvironmentBlocks {
     // environment - solid natural
     abyss, abyssalBedrock, abyssalBasalt, abyssalClay, abyssalIce, bedrockWall, fineRegolith, fineRegolithWall,
             topsoil, denseTopsoil, topsoilWall,
-            redClay, packedRedClay, redClayWall,
+            redClay, packedRedClay, redClayWall, argillite, argilliteWall,
             quartzite, quartz, quartziteWall,
             andesite, andesiteSand, andesiteWall,
             basaltPlates, denseBasaltPlates, hotspot, fissures, hotPlates, basaltPlateWall,
@@ -37,7 +37,7 @@ public class IgomEnvironmentBlocks {
     // overlay tiles - natural
 
     // boulders - natural
-    fineRegolithBoulder, topsoilBoulder, redClayBoulder, quartziteBoulder,
+    fineRegolithBoulder, topsoilBoulder, redClayBoulder, argilliteBoulder, quartziteBoulder,
             andesiteBoulder, basaltPlateBoulder, greyIceBoulder,
     // tallblocks - natural
     clayMound, topsoilMound, quartzCrystal, basaltMonolith, basaltPillars,
@@ -146,7 +146,7 @@ public class IgomEnvironmentBlocks {
         }};
         abyssalClay = new Floor("abyssal-clay"){{
             cacheLayer = CacheLayer.normal;
-            variants = 3;
+            variants = 4;
             localizedName = "Abyssal Clay";
             placeableOn = false;
             canShadow = false;
@@ -183,7 +183,7 @@ public class IgomEnvironmentBlocks {
         }};
         redClay = new Floor("red-clay"){{
             localizedName = "Red Clay";
-            variants = 3;
+            variants = 4;
             speedMultiplier = 0.85f;
             attributes.set(IgomAttribute.alumina, 0.500f);
         }};
@@ -196,7 +196,17 @@ public class IgomEnvironmentBlocks {
         redClayWall = new StaticWall("red-clay-wall"){{
             localizedName = "Red Clay Wall";
             variants = 3;
-            attributes.set(Attribute.sand, 1.2f);
+            attributes.set(Attribute.sand, 0.75f);
+        }};
+        argillite = new Floor("argillite"){{
+            localizedName = "Argillite";
+            variants = 3;
+            attributes.set(IgomAttribute.alumina, 1f);
+        }};
+        argilliteWall = new StaticWall("argillite-wall"){{
+            localizedName = "Argillite Wall";
+            variants = 3;
+            attributes.set(Attribute.sand, 1.5f);
         }};
         quartzite = new Floor("quartzite"){{
             localizedName = "Quartzite";
@@ -414,7 +424,7 @@ public class IgomEnvironmentBlocks {
         redClayMethane = new MethaneFloor("red-clay-methane", 0.1f){{
             localizedName = "Submerged Red Clay";
             speedMultiplier = 0.6f;
-            variants = 3;
+            variants = 4;
             attributes.set(IgomAttribute.alumina, 0.500f);
         }};
         packedRedClayMethane = new MethaneFloor("packed-red-clay-methane", 0.1f){{
@@ -499,6 +509,11 @@ public class IgomEnvironmentBlocks {
             localizedName = "Red Clay Boulder";
             variants = 3;
             redClay.asFloor().decoration = this;
+        }};
+        argilliteBoulder = new Prop("argillite-boulder"){{
+            localizedName = "Argillite Boulder";
+            variants = 3;
+            argillite.asFloor().decoration = this;
         }};
         quartziteBoulder = new Prop("quartzite-boulder"){{
             localizedName = "Quartzite Boulder";

@@ -51,6 +51,7 @@ public class IgomLiquidBlocks {
         }};
         insulatedConduitBridge = new ClearLiquidBridge("insulated-conduit-bridge") {{
             localizedName = "Insulated Conduit Bridge";
+            drawTeamOverlay = false;
             requirements(Category.liquid, with(Items.graphite, 18, IgomItems.nickel, 18));
             buildCostMultiplier = 2f;
             connectedPower = false;

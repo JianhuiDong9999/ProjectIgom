@@ -29,11 +29,12 @@ public class IgomPayloadBlocks {
             localizedName = "Walker Constructor";
             requirements(Category.units, with(IgomItems.nickel, 320, Items.silicon, 240, Items.graphite, 240));
             buildCostMultiplier = 1.1f;
+            drawTeamOverlay = false;
             size = 3;
             health = 2840;
             armor = 6f;
             configurable = false;
-            plans.add(new UnitPlan(IgomUnitTypes.pike, 60f * 45f, with(IgomItems.nickel, 45, Items.silicon, 72)));
+            plans.add(new UnitPlan(IgomUnitTypes.pike, 60f * 45f, with(IgomItems.nickel, 24, Items.silicon, 36)));
             consumeLiquid(IgomLiquids.oxygen, 4f / 60f);
 
             regionSuffix = "-chrome";

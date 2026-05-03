@@ -43,34 +43,35 @@ public class IgomUnitTypes {
     }*/
     public static UnitType
             // Core Units
-            detect, survey, advent,
-            // Ground Armored Units
-            pike, halberd, awlpike, corseque,
+            detect, survey, advent, instigate, castigate,
+            // Ground Assault Units
+            pike, halberd, ahlspiess,
             // Ground Reaver Units
-            morningstar, glaive, warscythe,
+            morningstar, corseque, glaive, warscythe,
             // Ground Heavy Armor
-            vanguard, bulwark, pavise, aegis,
+            vanguard, bulwark, aegis, suzerain, imperator,
             // Creeper Units
-            acarid, scorpio, eurypterid,
+            acarid, vespa, scorpius, eurypterid,
             // Assault Fighters
             neutrino, photon, hadron,
             // Reaver Fighters
-            nymph, sylphus, pleiades, theosis,
-            shrike, condor, phoenix,
+            nymph, sylphus, theosis, pleiades,
+            // Air-Superiority Fighters
+            shrike, corax, condor, phoenix, altair,
             // Bombers
-            azimuth, penumbra,
+            azimuth, penumbra, aphelion,
             // Air Frigates
 
             // Air Cruisers
                 // Reaver Cruisers
-                    dusk, twilight, oblivion, nihility,
+                    dusk, evernight, oblivion, nihilus,
                 // Surge Cruisers
                     virga, stratus, cumulonimbus, tempest,
             // Naval Cruisers
                 // Battlecruisers
                     garfish, barracuda, carcharodon,
                 // Battleships
-                    colossus;
+                    aries, magnum, colossus;
 
     public static void load() {
         // Ground
@@ -82,11 +83,11 @@ public class IgomUnitTypes {
             speed = 0.6f;
             hitSize = 12f;
             rotateSpeed = 3f;
-            health = 840;
-            armor = 5f;
+            health = 340;
+            armor = 6f;
             weapons.add(new Weapon("project-igom-pike-cannon"){{
                 top = false;
-                reload = 36f;
+                reload = 40f;
                 alternate = true;
                 x = 6.4f;
                 y = 0f;
@@ -97,7 +98,7 @@ public class IgomUnitTypes {
                 shoot.shotDelay = 5f;
                 shootSound = Sounds.shoot;
                 ejectEffect = Fx.casing1;
-                bullet = new BasicBulletType(5f, 42){{
+                bullet = new BasicBulletType(5f, 20){{
                     frontColor = Color.valueOf("ffffff");
                     backColor = trailColor = Color.valueOf("657de2");
                     width = 8f;
@@ -132,12 +133,12 @@ public class IgomUnitTypes {
             speed = 0.5f;
             hitSize = 18f;
             rotateSpeed = 2.5f;
-            health = 3250;
-            armor = 24f;
+            health = 1650;
+            armor = 10f;
             weapons.add(new Weapon("project-igom-halberd-cannon"){{
                 top = false;
                 reload = 72f;
-                shoot = new ShootSpread(8, 1.5f);
+                shoot = new ShootSpread(9, 1.2f);
                 recoil = 3f;
                 recoilPow = 2f;
                 inaccuracy = 2f;
@@ -145,7 +146,7 @@ public class IgomUnitTypes {
                 ejectEffect = Fx.casing2;
                 shootSound = Sounds.shootDiffuse;
                 shootSoundVolume = 0.33f;
-                bullet = new BasicBulletType(7f, 36){{
+                bullet = new BasicBulletType(7f, 18){{
                     frontColor = Color.valueOf("ffffff");
                     backColor = Color.valueOf("657de2");
                     width = 12f;
@@ -171,7 +172,7 @@ public class IgomUnitTypes {
             drag = 0.11f;
             hitSize = 12f;
             rotateSpeed = 2.8f;
-            health = 1080;
+            health = 320;
             armor = 2f;
             legStraightness = 0.3f;
             stepShake = 0f;
@@ -205,61 +206,64 @@ public class IgomUnitTypes {
                 y = 0;
                 top = false;
                 //layerOffset = 0.01f;
-                shoot.shots = 1;
-                shoot.shotDelay = 12f;
-                shootSound = Sounds.shootCleroi;
-                shootSoundVolume = 0.2f;
-                reload = 20f;
-                bullet = new BasicBulletType(6.4f, 32) {{
-                    collidesAir = false;
+                shootSound = Sounds.shootMerui;
+                shootSoundVolume = 0.5f;
+                reload = 40f;
+                inaccuracy = 3f;
+                bullet = new BasicBulletType(6.4f, 16) {{
+                    //splashDamage = 20;
+                    //splashDamageRadius = 16f;
+                    pierce = true;
+                    pierceArmor = false;
+                    pierceBuilding = true;
+                    pierceCap = 2;
+                    //knockback = 0.6f;
+                    //collidesAir = false;
                     shootEffect = new Effect(20.0F, (e) -> {
                         Draw.color(Color.valueOf("657de2"), e.color, e.fin());
                         rand.setSeed((long)e.id);
 
-                        for(int i = 0; i < 4; ++i) {
+                        for(int i = 0; i < 2; ++i) {
                             float rot = e.rotation + rand.range(22.0F);
                             v.trns(rot, rand.random(e.finpow() * 21.0F));
-                            Fill.poly(e.x + v.x, e.y + v.y, 3, e.fout() * 3.0F + 0.2F, rand.random(360.0F));
+                            Fill.poly(e.x + v.x, e.y + v.y, 3, e.fout() * 3.0F + 0.4F, rand.random(360.0F));
                         }
                     });
                     frontColor = Color.valueOf("ffffff");
                     backColor = Color.valueOf("657de2");
-                    hitSound = Sounds.explosionCleroi;
-                    hitEffect = despawnEffect = new Effect(14.0F, (e) -> {
+                    //hitSound = Sounds.explosionDull;
+                    //hitSoundVolume = 0.2f;
+                    hitEffect = despawnEffect = hitLancer; /*new Effect(14.0F, (e) -> {
                         Draw.color(Color.valueOf("657de2"), e.color, e.fin());
                         e.scaled(7.0F, (s) -> {
                             Lines.stroke(0.5F + s.fout());
-                            Lines.circle(e.x, e.y, s.fin() * 5.0F);
+                            Lines.circle(e.x, e.y, s.fin() * 14.0F);
                         });
                         Lines.stroke(0.5F + e.fout());
-                        Angles.randLenVectors((long)e.id, 3, e.fin() * 17.0F, (x, y) -> {
+                        Angles.randLenVectors((long)e.id, 6, e.fin() * 17.0F, (x, y) -> {
                             float ang = Mathf.angle(x, y);
                             Fill.poly(e.x + x, e.y + y, 3, e.fout() * 4.8F, ang);
                         });
                         Drawf.light(e.x, e.y, 20.0F, e.color, 0.6F * e.fout());
-                    });
-                    hitSoundVolume = 0.2f;
-                    lifetime = 26f;
-                    height = 24f;
+                    });*/
+                    lifetime = 28f;
+                    height = 28f;
                     width = 6f;
                     trailColor = Color.valueOf("657de2");
                     trailWidth = 1f;
-                    trailLength = 4;
-                    pierce = true;
-                    pierceArmor = false;
-                    pierceBuilding = true;
-                    pierceCap = 3;
+                    trailLength = 2;
                     fragBullets = 1;
                     fragOnHit = fragOnAbsorb = false;
-                    fragRandomSpread = 135f;
+                    fragRandomSpread = 15f;
                     fragLifeMin = fragLifeMax = 1.0f;
                     fragVelocityMin = fragVelocityMax = 1.0f;
-                    fragBullet = new ReboundBulletType(4.8f, 24) {{
+                    fragBullet = new ReboundBulletType(6.4f, 12) {{
                         collidesAir = false;
+                        knockback = 0.6f;
                         frontColor = Color.valueOf("ffffff");
                         backColor = Color.valueOf("657de2");
                         hitSound = Sounds.explosionCleroi;
-                        hitEffect = despawnEffect = new Effect(14.0F, (e) -> {
+                        hitEffect = despawnEffect = hitLancer; /*new Effect(14.0F, (e) -> {
                             Draw.color(Color.valueOf("657de2"), e.color, e.fin());
                             e.scaled(7.0F, (s) -> {
                                 Lines.stroke(0.5F + s.fout());
@@ -271,16 +275,20 @@ public class IgomUnitTypes {
                                 Fill.poly(e.x + x, e.y + y, 3, e.fout() * 3.2F, ang);
                             });
                             Drawf.light(e.x, e.y, 20.0F, e.color, 0.6F * e.fout());
-                        });
+                        });*/
                         hitSoundVolume = 0.075f;
-                        height = 12f;
+                        height = 28f;
                         width = 6f;
-                        lifetime = 12f;
+                        lifetime = 4f;
                         pierce = true;
                         pierceArmor = false;
                         pierceBuilding = true;
                         pierceCap = 2;
-                        lifetimeFactor = 1.2f;
+                        ricochet = true;
+                        lifetimeFactor = 1.5f;
+                        trailColor = Color.valueOf("657de2");
+                        trailWidth = 1f;
+                        trailLength = 2;
                     }};
                 }};
             }});
@@ -305,14 +313,14 @@ public class IgomUnitTypes {
             moveSoundVolume = 0.05f;
             rotateSpeed = 3.8f;
             strafePenalty = 0.15f;
-            health = 620;
+            health = 250;
             armor = 2f;
             targetFlags = new BlockFlag[]{BlockFlag.drill, BlockFlag.factory, null};
             itemCapacity = 15;
             range = tilesize * 24f;
             circleTarget = true;
             circleTargetRadius = tilesize * 12f;
-            final BulletType neutrinoBullet = new ReboundBulletType(5.6f, 36){{
+            final BulletType neutrinoBullet = new ReboundBulletType(5.6f, 16){{
                 frontColor = Color.valueOf("ffffff");
                 backColor = trailColor = Color.valueOf("afcdff");
                 width = 8f;
@@ -326,16 +334,17 @@ public class IgomUnitTypes {
             }};
 
             weapons.add(new Weapon("project-igom-neutrino-blaster"){{
-                layerOffset = -0.01f;
+                layerOffset = 0f;
+                top = false;
                 mirror = false;
                 alternate = false;
                 minShootVelocity = 2f;
-                reload = 150f;
+                reload = 180f;
                 recoil = 1f;
                 recoilPow = 1f;
                 rotate = false;
                 inaccuracy = 10f;
-                x = 4f;
+                x = 2.5f;
                 ejectEffect = Fx.casing1;
                 shootCone = 30f;
                 shootSound = Sounds.shootElude;
@@ -344,17 +353,18 @@ public class IgomUnitTypes {
                 shoot.firstShotDelay = 6f;
                 bullet = neutrinoBullet;
             }}, new Weapon("project-igom-neutrino-blaster"){{
-                layerOffset = -0.01f;
+                layerOffset = 0f;
+                top = false;
                 mirror = false;
                 flipSprite = true;
                 alternate = false;
                 minShootVelocity = 2f;
-                reload = 150f;
+                reload = 180f;
                 recoil = 1f;
                 recoilPow = 1f;
                 rotate = false;
                 inaccuracy = 10f;
-                x = -4f;
+                x = -2.5f;
                 ejectEffect = Fx.casing1;
                 shootCone = 30f;
                 shootSound = Sounds.shootElude;
@@ -385,11 +395,11 @@ public class IgomUnitTypes {
             moveSoundVolume = 0.25f;
             rotateSpeed = 1.6f;
             strafePenalty = 0.1f;
-            health = 3240;
-            armor = 12f;
+            health = 1840;
+            armor = 6f;
             targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.generator, BlockFlag.battery, BlockFlag.unitAssembler, null};
             itemCapacity = 60;
-            abilities.add(new FancyShieldRegenFieldAbility(20f, 240f, 90f, 90f) {{
+            abilities.add(new FancyShieldRegenFieldAbility(20f, 60f, 120f, 90f) {{
                 affectGround = false;
             }});
             range = tilesize * 32f;
@@ -397,7 +407,7 @@ public class IgomUnitTypes {
             autoDropBombs = true;
             circleTarget = true;
             circleTargetRadius = tilesize * 12f;
-            final BulletType azimuthBomb = new BombBulletType(160f, 28, "project-igom-small-bomb"){{
+            final BulletType azimuthBomb = new BombBulletType(36f, 28, "project-igom-small-bomb"){{
                 speed = 1.25f;
                 accel = 0f;
                 keepVelocity = false;
@@ -481,13 +491,14 @@ public class IgomUnitTypes {
             mineTier = 2;
             buildSpeed = 1f;
             payloadCapacity = 2f * 2f * tilesize * tilesize;
+            pickupUnits = false;
             drag = 0.017f;
             speed = 2.2f;
             rotateSpeed = 12f;
             accel = 0.03f;
             fogRadius = 0f;
             itemCapacity = 75;
-            health = 320f;
+            health = 260f;
             armor = 3f;
             engineSize = 0;
             engines.set(new UnitEngine[]{new UnitEngine(5.5f,-5f,2f,315f),
@@ -497,7 +508,7 @@ public class IgomUnitTypes {
             circleTarget = true;
             range = 24f;
             alwaysUnlocked = true;
-            abilities.add(new FancyRepairFieldAbility(25, 60f, 80f) {{
+            abilities.add(new FancyRepairFieldAbility(16, 120f, 80f) {{
                 healColor = Pal.regen;
                 size = 2;
                 activeEffect = new Effect(60.0F, (e) -> {
@@ -525,7 +536,7 @@ public class IgomUnitTypes {
                             shootEffect = Fx.sparkShoot;
                             hitEffect = Fx.pointHit;
                             maxRange = 80f;
-                            damage = 48f;
+                            damage = 20f;
                         }};
                     }},
                     new Weapon() {{
@@ -540,7 +551,7 @@ public class IgomUnitTypes {
                         inaccuracy = 7.5f;
                         ignoreRotation = true;
                         shootSound = Sounds.shootRetusa;
-                        bullet = new BombBulletType(35f, 12f * 8f){{
+                        bullet = new BombBulletType(15f, 12f * 8f){{
                             sprite = "project-igom-small-bomb";
                             backColor = Color.valueOf("99e2ff");
                             width = 8f;
@@ -556,7 +567,7 @@ public class IgomUnitTypes {
                             splashDamagePierce = false;
                             buildingDamageMultiplier = 0.01f;
                             healAmount = 20f;
-                            healPercent = 2.5f;
+                            healPercent = 1f;
                             healColor = Color.valueOf("99e2ff");
                             hitEffect = despawnEffect = new WrapEffect(Fx.dynamicSpikes, Color.valueOf("99e2ff"), 32f);
                             hitShake = 2f;

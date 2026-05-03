@@ -16,7 +16,7 @@ public class ItemLiquidTurret extends ItemTurret {
 
     public ItemLiquidTurret(String name) {
         super(name);
-        hasLiquids = true;
+        //hasLiquids = true;
     }
 
     public class ItemLiquidTurretBuild extends ItemTurretBuild {

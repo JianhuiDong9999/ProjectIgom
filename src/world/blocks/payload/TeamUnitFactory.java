@@ -2,10 +2,12 @@ package world.blocks.payload;
 
 import arc.graphics.g2d.Draw;
 import arc.util.Eachable;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.units.UnitFactory;
+import world.draw.DrawTeam;
 
 import static mindustry.Vars.player;
 
@@ -41,8 +43,8 @@ public class TeamUnitFactory extends UnitFactory {
             Draw.z(Layer.blockOver + 0.1f);
 
             Draw.rect(topRegion, x, y);
-            if(teamRegions[player.team().id] == teamRegion) Draw.color(player.team().color);
-            Draw.rect(teamRegions[player.team().id], x, y);
+            if(teamRegions[team.id] == teamRegion) Draw.color(team.color);
+            Draw.rect(teamRegions[team.id], x, y);
             Draw.color();
         }
     }
