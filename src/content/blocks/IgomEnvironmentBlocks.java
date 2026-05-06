@@ -303,14 +303,14 @@ public class IgomEnvironmentBlocks {
             localizedName = "Carbon Snow Ice";
             variants = 3;
             speedMultiplier = 1.1f;
-            attributes.set(Attribute.water, 0.8f);
+            attributes.set(Attribute.water, 0.5f);
         }};
         greyIce = new Floor("grey-ice"){{
             localizedName = "Grey Ice";
             variants = 3;
             speedMultiplier = 1.2f;
             dragMultiplier = 0.2f;
-            attributes.set(Attribute.water, 2.00f);
+            attributes.set(Attribute.water, 1f);
             // TODO: attributes.set(Attribute.helium, 0.200f);
         }};
         greyIceWall = new StaticWall("grey-ice-wall"){{

@@ -13,6 +13,7 @@ import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
+import world.draw.DrawTeam;
 
 public class ToggleableFlowGate extends Block{
     public float speed = 5f;
@@ -67,6 +68,9 @@ public class ToggleableFlowGate extends Block{
     public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
         Draw.rect(region, plan.drawx(), plan.drawy());
         Draw.rect(plan.config == Boolean.TRUE ? topRegionInverted : topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        if(plan.worldContext){
+            DrawTeam.drawPlanTeam(this, plan.drawx(), plan.drawy());
+        }
     }
 
     @Override
@@ -84,6 +88,7 @@ public class ToggleableFlowGate extends Block{
         public void draw(){
             Draw.rect(region, x, y);
             Draw.rect(invert ? topRegionInverted : topRegion, x, y, rotdeg());
+            drawTeamTop();
         }
 
         @Override
@@ -197,4 +202,3 @@ public class ToggleableFlowGate extends Block{
         }
     }
 }
-

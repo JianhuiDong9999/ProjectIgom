@@ -37,7 +37,7 @@ public class IgomItems {
             cost = 1.2f;
             lowPriority = true;
         }};
-        corundum = new Item("item-corundum", Color.valueOf("c678ac")) {{
+        corundum = new Item("item-corundum", Color.valueOf("d4839c")) {{
             localizedName = "Corundum";
             healthScaling = 0.5f;
             hardness = 4;

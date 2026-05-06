@@ -313,8 +313,8 @@ public class IgomTurretBlocks {
 
             coolantMultiplier = 8f;
             shootSound = Sounds.shootMissileLarge;
-            consumeLiquid(IgomLiquids.oxygen, 8f / 60f);
-            consumeLiquid(IgomLiquids.methane, 12f / 60f);
+            consumeLiquid(IgomLiquids.oxygen, 4f / 60f);
+            //consumeLiquid(IgomLiquids.methane, 12f / 60f);
             coolant = consume(new ConsumeLiquid(IgomLiquids.liquidnitrogen, 6f / 60f));
             liquidCapacity = 120f;
 
@@ -333,7 +333,7 @@ public class IgomTurretBlocks {
             size = 3;
             squareSprite = false;
             envEnabled |= Env.space;
-            reload = 3.5f * 60f;
+            reload = 4.5f * 60f;
             range = 396;
             shootCone = 60f;
             health = 2820;

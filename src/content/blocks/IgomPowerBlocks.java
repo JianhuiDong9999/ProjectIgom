@@ -18,6 +18,7 @@ import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BlockGroup;
 import world.draw.DrawTeam;
+import world.draw.DrawTeamTopOnly;
 
 import static arc.graphics.g2d.Draw.alpha;
 import static arc.graphics.g2d.Draw.color;
@@ -52,6 +53,7 @@ public class IgomPowerBlocks {
             fullLightColor = Color.valueOf("ff8266");
             baseExplosiveness = 0.5f;
             explosivenessScale = 0.5f;
+            drawer = new DrawMulti(new DrawDefault(), new DrawRegion("-top"), new DrawTeam());
         }};
         pylon = new PowerNode("pylon") {{
             localizedName = "Pylon";
@@ -148,7 +150,7 @@ public class IgomPowerBlocks {
                 glowScale = 11f;
                 glowIntensity = 0.5f;
                 color = Color.valueOf("b54b00");
-            }});
+            }}, new DrawTeamTopOnly());
         }};
         lithiumFuelReactor = new ConsumeGenerator("lithium-fuel-reactor") {{
             localizedName = "Lithium Fuel Reactor";

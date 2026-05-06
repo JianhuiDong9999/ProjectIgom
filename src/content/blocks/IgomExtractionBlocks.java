@@ -18,6 +18,8 @@ import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
 import world.blocks.IgomAttribute;
 import world.blocks.extraction.AttributeCollector;
+import world.blocks.extraction.TeamFracker;
+import world.draw.DrawTeam;
 
 import static mindustry.type.ItemStack.with;
 
@@ -71,14 +73,15 @@ public class IgomExtractionBlocks {
 
             description = "Drill that extracts resources from the ground. Requires water to function. Can be boosted with hydrogen.";
         }};
-        iceDrill = new Fracker("ice-drill") {{
+        iceDrill = new TeamFracker("ice-drill") {{
             localizedName = "Ice Drill";
             buildCostMultiplier = 2f;
+            drawTeamOverlay = true;
             squareSprite = false;
             requirements(Category.production, with(Items.graphite, 160, IgomItems.nickel, 50, Items.silicon, 50));
             attribute = Attribute.water;
             result = Liquids.water;
-            pumpAmount = 0.26f;
+            pumpAmount = 0.25f;
             size = 3;
             health = 825;
             armor = 2;
@@ -87,11 +90,10 @@ public class IgomExtractionBlocks {
             consumePower(160f / 60f);
             consumeItem(Items.graphite);
             itemUseTime = 300f;
-            drawer = new DrawMulti(new DrawLiquidRegion(), new DrawDefault());
-            // TODO: Set rotator region below the main region.
+            drawer = new DrawMulti(new DrawLiquidRegion(), new DrawDefault(), new DrawTeam());
             rotateSpeed = 0.8f;
             envRequired |= 64;
-            baseEfficiency = 0.5f;
+            baseEfficiency = 0f;
 
             description = "Extracts water from underground ice reservoirs. " +
                     "Requires graphite as filter material.";

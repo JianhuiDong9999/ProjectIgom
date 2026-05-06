@@ -31,8 +31,8 @@ import static mindustry.type.ItemStack.with;
 public class IgomCrafterBlocks {
     public static Block
     reinforcedArcFurnace, metafiberWeaver, cermetKiln, hydrideSynthesizer, insulatedElectrolyzer, ethyleneSynthesizer, polymerPress, nichromeCrucible,
-            hydrogenRefprmer, miniCapacitorFactory, aluminumSmelter, crystalArcFurnace, lithiumKiln, nitrideSynthesizer, nickelCobaltFurnace,
-            plasticAlloyWeaver, phaseKnitter, phasePlasticWeaver, vitrifier, cyanogenCatalyzer, nitrogenConcentrator, condenser,
+            hydrogenReformer, miniCapacitorFactory, aluminumSmelter, crystalArcFurnace, lithiumKiln, nitrideSynthesizer, nickelCobaltFurnace,
+            polyAlloyWeaver, phaseKnitter, phasePlasticWeaver, vitrifier, cyanogenCatalyzer, nitrogenConcentrator, condenser,
             argonConcentrator, highEntropyAlloyFurnace, antimatterSolidifier, technetiumConverter, phaseKiln, subatomicCompressor;
     // Note: Hydrogen Reformer consumes water and methane to mass-produce hydrogen.
     // Input sulfide to massively increase process efficiency.
